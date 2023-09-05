@@ -1,16 +1,30 @@
 [
   {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "Measuring the Effects of a Carbon Tax (2023 with Pablo D’Erasmo)\nProvision of Transplant Education for Dialysis Patients Starting Dialysis: Disparities Persist (2021 with Vincenzo Villani, Paul J. Eliason, James W. Roberts, Nicole DePasquale, Christine Park, Lisa M. McElroy, Ryan C. McDevitt)\n\nUnder review in Journal of Surgical Research\nPresented in 2023 at 10th Annual PhD Excellence Initiative Summer Workshop at the Federal Reserve Bank of New York\nPresented in 2023 at Annual Research Assistant Presentation Series at the Federal Reserve Bank of Philadelphia\n\nAir Emissions and Disparities Among Developing Nations: An Analysis of the Kyoto Protocol (2020 with Anthony Ponce)\n\nPresented in 2021 by Anthony Ponce at 46th Annual California State University, Social Science Research and Instruction Center on Social Science Student Symposium [Online]\n\nBest Undergraduate Paper (2nd Place)\nBest use of Data and Quantitative Methods (1st Place)"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "website 7",
+    "title": "Gabriel Butler",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+    "text": "I am a Research Analyst in the Banking section of the Department of Research at the Federal Reserve Bank of Philadelphia. Prior to joining The Fed, I worked in international education in mainland China for about ten years. In 2020, I was an American Economic Association Summer Program at Michigan State University, where I took PhD level coursework in Economics. I graduated from the University of California, Los Angeles with a B.A. in Business Economics and a minor in Japanese.\nMy primary interests are in health and labor economics and their intersections with race and inequality. My email address is gabriel.butler [at] gmail."
   },
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About me",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "My main main research interests are in health and labor. I am particularly interested in Alzheimer’s disease and its spillover effects on family members, the economics of long term care for patients with neurodegenerative diseases, as well as the influence of neonatal and early childhood experience on development of the disease. I also have an interest in the Chinese economy and social problems in China.\nBefore pivoting to a career in academic research, I worked in education in mainland China. First I was an ESL teacher and I studied Chinese in my free time. Following that, I taught high school World History and served as teaching assistant for credit bearing courses in Economics offered through UCLA Extension in an international high school program that is overseen by UCLA in the city of Nanjing. I have also taught R programming and consider myself to be an R evangelist. (I made this website in RStudio!) In 2022, I started serving as a teaching assistant again for courses in Public Economics and Program Evaluation & Data Analysis.\nDuring the ten years I spent in China, I traveled widely and managed to visit over 30 cities. I have also lived in Japan (1 year), Mexico (1 summer), Finland (10 months) and the United Kingdom (about 6 months). I still speak and read Mandarin Chinese pretty well. My Japanese is extremely rusty. I know almost no Spanish or Finnish."
+  },
+  {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "CV",
+    "section": "",
+    "text": "[Download my CV here]()\nIf you can’t view my CV in your browser, please use the download button to view it locally instead."
   }
 ]
