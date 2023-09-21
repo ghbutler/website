@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://ghbutler.github.io/website/teaching.html</loc>
+    <lastmod>2023-09-21T20:53:14.453Z</lastmod>
+  </url>
+  <url>
     <loc>https://ghbutler.github.io/website/research.html</loc>
-    <lastmod>2023-09-14T01:56:33.185Z</lastmod>
+    <lastmod>2023-09-21T20:53:14.980Z</lastmod>
   </url>
   <url>
     <loc>https://ghbutler.github.io/website/index.html</loc>
-    <lastmod>2023-09-14T01:56:33.563Z</lastmod>
+    <lastmod>2023-09-21T20:53:15.572Z</lastmod>
   </url>
   <url>
     <loc>https://ghbutler.github.io/website/about.html</loc>
-    <lastmod>2023-09-14T01:56:34.100Z</lastmod>
+    <lastmod>2023-09-21T20:53:16.052Z</lastmod>
   </url>
   <url>
     <loc>https://ghbutler.github.io/website/cv.html</loc>
-    <lastmod>2023-09-14T01:56:34.497Z</lastmod>
+    <lastmod>2023-09-21T20:53:16.610Z</lastmod>
   </url>
 </urlset>
