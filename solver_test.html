@@ -209,17 +209,17 @@
 
 <div class="controls">
     <div class="cg">
-        <label>\(\tau^\varphi\) (premium barg.)</label>
+        <label>τ<sup>φ</sup> (premium barg.)</label>
         <input type="range" id="tauPhi" min="0.05" max="0.95" step="0.01" value="0.47">
         <span class="val" id="tauPhiVal">0.47</span>
     </div>
     <div class="cg">
-        <label>\(\tau_j\) (hospital barg.)</label>
+        <label>τ<sub>j</sub> (hospital barg.)</label>
         <input type="range" id="tauJ" min="0.05" max="0.95" step="0.01" value="0.35">
         <span class="val" id="tauJVal">0.35</span>
     </div>
     <div class="cg">
-        <label>\(\sigma\) (nesting param.)</label>
+        <label>σ (nesting param.)</label>
         <input type="range" id="sigma" min="0.15" max="0.99" step="0.01" value="0.50">
         <span class="val" id="sigmaVal">0.50</span>
     </div>
@@ -231,7 +231,7 @@
         </select>
     </div>
     <button onclick="runSingle()">Run Single</button>
-    <button class="sweep" onclick="runSweep()">Sweep \(\tau^\varphi\)</button>
+    <button class="sweep" onclick="runSweep()">Sweep τ<sup>φ</sup></button>
     <button class="stress" onclick="runStress()">Full Stress Test</button>
 </div>
 
@@ -241,8 +241,8 @@
 </div>
 
 <div class="grid" style="margin-top:1rem">
-    <div class="panel"><h2>Δ Premium curve (sweep \(\tau^\varphi\))</h2><canvas id="cP" width="500" height="260"></canvas></div>
-    <div class="panel"><h2>Δ Hospital Price curve (sweep \(\tau^\varphi\))</h2><canvas id="cH" width="500" height="260"></canvas></div>
+    <div class="panel"><h2>Δ Premium curve (sweep τ<sup>φ</sup>)</h2><canvas id="cP" width="500" height="260"></canvas></div>
+    <div class="panel"><h2>Δ Hospital Price curve (sweep τ<sup>φ</sup>)</h2><canvas id="cH" width="500" height="260"></canvas></div>
 </div>
 
 <div style="margin-top:1.5rem;">
@@ -692,7 +692,6 @@ function drawChart(id, xs, ys, color) {
 }
 
 window.addEventListener('load', () => {
-    runSingle();
     if (typeof renderMathInElement === 'function') {
         renderMathInElement(document.body, {
             delimiters: [
