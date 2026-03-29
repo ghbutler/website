@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Solver Methodology — Nested Logit + Nash-in-Nash Bargaining</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: Inter, system-ui, sans-serif;
+            font-size: 13px;
+            background: #fafaf9;
+            color: #44403c;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-family: Newsreader, Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1c1917;
+            margin-bottom: 0.25rem;
+        }
+        .subtitle {
+            font-size: 0.875rem;
+            color: #78716b;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.025em;
+        }
+        .subtitle a {
+            color: #57534e;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .subtitle a:hover { color: #1c1917; }
+        h2 {
+            font-family: Newsreader, Georgia, serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #44403c;
+            margin: 0 0 0.75rem;
+        }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .panel {
+            background: white;
+            border: 1px solid #e7e5e4;
+            border-radius: 0.375rem;
+            padding: 1rem;
+        }
+        .model-note {
+            background: white;
+            border: 1px solid #e7e5e4;
+            border-radius: 0.375rem;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.8125rem;
+            color: #57534e;
+            line-height: 1.7;
+        }
+        .model-note strong { color: #1c1917; }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-end;
+            margin-bottom: 1.5rem;
+            background: white;
+            border: 1px solid #e7e5e4;
+            border-radius: 0.375rem;
+            padding: 1rem 1.25rem;
+        }
+        .cg { display: flex; flex-direction: column; gap: 0.25rem; }
+        .cg label {
+            color: #78716b;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .cg input[type="range"] {
+            width: 140px;
+            height: 0.375rem;
+            border-radius: 0.25rem;
+            background: #e7e5e4;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        .cg input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: #1c1917;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .cg input[type="range"]::-moz-range-thumb {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: #1c1917;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .cg select {
+            font-family: Inter, system-ui, sans-serif;
+            font-size: 0.8125rem;
+            background: white;
+            color: #44403c;
+            border: 1px solid #d6d3d1;
+            border-radius: 0.25rem;
+            padding: 0.375rem 0.5rem;
+        }
+        .val {
+            color: #1c1917;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        button {
+            background: #1c1917;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-family: Inter, system-ui, sans-serif;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            transition: background 0.15s;
+        }
+        button:hover { background: #44403c; }
+        button:disabled { opacity: 0.35; cursor: not-allowed; }
+        button.sweep { background: #44403c; }
+        button.sweep:hover { background: #57534e; }
+        button.stress { background: #78716b; }
+        button.stress:hover { background: #57534e; }
+
+        table { border-collapse: collapse; width: 100%; font-size: 0.8125rem; }
+        th, td { padding: 0.5rem 0.75rem; text-align: right; border-bottom: 1px solid #e7e5e4; }
+        th {
+            color: #78716b;
+            text-transform: uppercase;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            background: #f9f7f4;
+        }
+        td:first-child, th:first-child { text-align: left; }
+
+        canvas {
+            width: 100%;
+            height: 260px;
+            background: #fafaf9;
+            border: 1px solid #e7e5e4;
+            border-radius: 0.375rem;
+        }
+
+        #log {
+            max-height: 500px;
+            overflow-y: auto;
+            background: #1c1917;
+            border: 1px solid #e7e5e4;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 11px;
+            color: #a8a29e;
+            line-height: 1.6;
+        }
+        .ok { color: #059669; }
+        .warn { color: #d97706; }
+        .fail { color: #dc2626; }
+        .info { color: #78716b; }
+        .num { color: #1c1917; }
+
+        pre { white-space: pre-wrap; word-break: break-all; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<h1>Solver Methodology</h1>
+<p class="subtitle">
+    Nested Logit Demand + Nash-in-Nash Bargaining with Recapture · Ho &amp; Lee (2017) ·
+    <a href="ho_lee_structural.html">&larr; Back to Structural Model</a>
+</p>
+
+<div class="model-note">
+    <strong>Model:</strong> Nested logit demand (PPO nest = {BS, BC}, HMO nest = {Kaiser}) + Nash-in-Nash hospital bargaining with recapture.<br>
+    <strong>Hospital A</strong> (community) serves BS and BC. <strong>Hospital B</strong> (integrated) serves Kaiser only.<br>
+    <strong>Recapture:</strong> When Hospital A bargains with BS, it accounts for patients it would recapture through BC if BS disagreed.
+    This raises BS's baseline hospital price (Hospital A has a better outside option). When BC is <em>removed</em>, recapture vanishes &rarr; hospital prices drop.<br>
+    <strong>Price FOC:</strong> \(p = (1-\tau_j) \cdot (\varphi - \eta) / r + \tau_j \cdot (c + \rho)\), where \(\rho\) = recapture value per admission.
+</div>
+
+<div class="controls">
+    <div class="cg">
+        <label>\(\tau^\varphi\) (premium barg.)</label>
+        <input type="range" id="tauPhi" min="0.05" max="0.95" step="0.01" value="0.47">
+        <span class="val" id="tauPhiVal">0.47</span>
+    </div>
+    <div class="cg">
+        <label>\(\tau_j\) (hospital barg.)</label>
+        <input type="range" id="tauJ" min="0.05" max="0.95" step="0.01" value="0.35">
+        <span class="val" id="tauJVal">0.35</span>
+    </div>
+    <div class="cg">
+        <label>\(\sigma\) (nesting param.)</label>
+        <input type="range" id="sigma" min="0.15" max="0.99" step="0.01" value="0.50">
+        <span class="val" id="sigmaVal">0.50</span>
+    </div>
+    <div class="cg">
+        <label>Counterfactual</label>
+        <select id="removal">
+            <option value="kaiser">Remove Kaiser</option>
+            <option value="bc">Remove Blue Cross</option>
+        </select>
+    </div>
+    <button onclick="runSingle()">Run Single</button>
+    <button class="sweep" onclick="runSweep()">Sweep \(\tau^\varphi\)</button>
+    <button class="stress" onclick="runStress()">Full Stress Test</button>
+</div>
+
+<div class="grid">
+    <div class="panel"><h2>Baseline Equilibrium</h2><div id="eqT"></div></div>
+    <div class="panel"><h2>Counterfactual &Delta; (BS outcomes)</h2><div id="cfT"></div></div>
+</div>
+
+<div class="grid" style="margin-top:1rem">
+    <div class="panel"><h2>Δ Premium curve (sweep \(\tau^\varphi\))</h2><canvas id="cP" width="500" height="260"></canvas></div>
+    <div class="panel"><h2>Δ Hospital Price curve (sweep \(\tau^\varphi\))</h2><canvas id="cH" width="500" height="260"></canvas></div>
+</div>
+
+<div style="margin-top:1.5rem;">
+    <h2>Test Log</h2>
+    <pre id="log"></pre>
+</div>
+
+<script>
+// =============================================================
+// MODEL: Nested Logit + Nash-in-Nash with Recapture
+// =============================================================
+const N = 1000000, BETA = 0.0003, AR = 0.08;
+const DELTA = { bs: 1.0, kaiser: 1.8, bc: 1.3 };
+const ETA   = { bs: 3200, kaiser: 3000, bc: 3100 };
+const NEST  = { bs: 'ppo', kaiser: 'hmo', bc: 'ppo' };
+const HOSP  = { bs: 'A', kaiser: 'B', bc: 'A' };
+const HC    = { A: 8000, B: 7500 };
+
+// --- NESTED LOGIT DEMAND ---
+function calcDemand(prems, active, sigma) {
+    const nests = {};
+    for (const m of active) { const n = NEST[m]; if (!nests[n]) nests[n] = []; nests[n].push(m); }
+
+    const nd = {};
+    let sumExpV = 1.0;
+    for (const [n, ms] of Object.entries(nests)) {
+        let D = 0;
+        const eu = {};
+        for (const m of ms) { eu[m] = Math.exp((DELTA[m] - BETA * prems[m]) / sigma); D += eu[m]; }
+        const cs = {};
+        for (const m of ms) cs[m] = eu[m] / D;
+        const expV = Math.exp(sigma * Math.log(D));
+        sumExpV += expV;
+        nd[n] = { ms, cs, expV };
+    }
+
+    const sh = {}, csh = {}, nsh = {};
+    for (const [n, d] of Object.entries(nd)) {
+        const ns = d.expV / sumExpV;
+        for (const m of d.ms) { sh[m] = d.cs[m] * ns; csh[m] = d.cs[m]; nsh[m] = ns; }
+    }
+    return { sh, csh, nsh };
+}
+
+// Employer welfare (nested logit inclusive value)
+function empWelfare(prems, active, sigma) {
+    const nests = {};
+    for (const m of active) { const n = NEST[m]; if (!nests[n]) nests[n] = []; nests[n].push(m); }
+    let sumExpV = 1.0;
+    for (const [n, ms] of Object.entries(nests)) {
+        let D = 0;
+        for (const m of ms) D += Math.exp((DELTA[m] - BETA * prems[m]) / sigma);
+        sumExpV += Math.exp(sigma * Math.log(D));
+    }
+    return N * Math.log(sumExpV) / BETA;
+}
+
+// --- RECAPTURE ---
+function recapture(j, prems, prices, active, sigma) {
+    const h = HOSP[j];
+    const sameHosp = active.filter(k => k !== j && HOSP[k] === h);
+    if (sameHosp.length === 0) return 0;
+
+    const { sh: shBase } = calcDemand(prems, active, sigma);
+    const withoutJ = active.filter(k => k !== j);
+    const { sh: shNew } = calcDemand(prems, withoutJ, sigma);
+
+    let rho = 0;
+    for (const k of sameHosp) {
+        rho += (shNew[k] - shBase[k]) * (prices[k] - HC[h]);
+    }
+    return rho / shBase[j];
+}
+
+// --- SOLVE HOSPITAL PRICES ANALYTICALLY GIVEN PREMIUMS ---
+function solvePricesGivenPremiums(prems, tauJ, sigma, activeMCOs) {
+    const prices = {};
+    const hospGroups = {};
+    for (const m of activeMCOs) {
+        const h = HOSP[m];
+        if (!hospGroups[h]) hospGroups[h] = [];
+        hospGroups[h].push(m);
+    }
+
+    for (const [h, mcos] of Object.entries(hospGroups)) {
+        const ci = HC[h];
+        if (mcos.length === 1) {
+            const m = mcos[0];
+            let p = (1 - tauJ) * (prems[m] - ETA[m]) / AR + tauJ * ci;
+            prices[m] = Math.max(p, ci);
+        } else if (mcos.length === 2) {
+            const [j, k] = mcos;
+            const { sh: shBase } = calcDemand(prems, activeMCOs, sigma);
+
+            const withoutJ = activeMCOs.filter(x => x !== j);
+            const { sh: shNoJ } = calcDemand(prems, withoutJ, sigma);
+            const alphaJ = shBase[j] > 1e-15 ? tauJ * (shNoJ[k] - shBase[k]) / shBase[j] : 0;
+
+            const withoutK = activeMCOs.filter(x => x !== k);
+            const { sh: shNoK } = calcDemand(prems, withoutK, sigma);
+            const alphaK = shBase[k] > 1e-15 ? tauJ * (shNoK[j] - shBase[j]) / shBase[k] : 0;
+
+            const Aj = (1 - tauJ) * (prems[j] - ETA[j]) / AR + tauJ * ci;
+            const Ak = (1 - tauJ) * (prems[k] - ETA[k]) / AR + tauJ * ci;
+
+            const denom = 1 - alphaJ * alphaK;
+            if (Math.abs(denom) > 1e-10) {
+                let pj = (Aj + alphaJ * (Ak - ci + alphaK * ci)) / denom;
+                let pk = (Ak + alphaK * (Aj - ci + alphaJ * ci)) / denom;
+                prices[j] = Math.max(pj, ci);
+                prices[k] = Math.max(pk, ci);
+            } else {
+                prices[j] = Math.max(Aj, ci);
+                prices[k] = Math.max(Ak, ci);
+            }
+        }
+    }
+    return prices;
+}
+
+// --- SOLVER ---
+function solveEquilibrium(tauPhi, tauJ, sigma, activeMCOs) {
+    let prems = {};
+    for (const m of activeMCOs) {
+        prems[m] = ETA[m] + AR * (HC[HOSP[m]] + 1000) + 800;
+    }
+
+    const MAX_ITER = 3000, TOL = 0.05;
+    const P_DAMP = 0.10;
+
+    for (let iter = 0; iter < MAX_ITER; iter++) {
+        const prices = solvePricesGivenPremiums(prems, tauJ, sigma, activeMCOs);
+
+        let maxChange = 0;
+        const { sh, csh, nsh } = calcDemand(prems, activeMCOs, sigma);
+
+        const Wf = empWelfare(prems, activeMCOs, sigma);
+        for (const m of activeMCOs) {
+            const sj = sh[m], sjg = csh[m], sg = nsh[m];
+            if (sj < 1e-12) continue;
+
+            const others = activeMCOs.filter(k => k !== m);
+            const GFT = Wf - empWelfare(prems, others, sigma);
+            if (GFT <= 0) continue;
+
+            const Q = (1 - sjg) / sigma + sjg * (1 - sg);
+            const rhs = ((1 - tauPhi) * N * sj) / (tauPhi * GFT) + BETA * Q;
+            if (rhs <= 0) continue;
+
+            const targetMargin = 1.0 / rhs;
+            const np = targetMargin + ETA[m] + AR * prices[m];
+            const floor = ETA[m] + AR * HC[HOSP[m]] + 10;
+            if (np >= floor && np < 50000) {
+                maxChange = Math.max(maxChange, Math.abs(np - prems[m]));
+                prems[m] += P_DAMP * (np - prems[m]);
+            }
+        }
+
+        if (maxChange < TOL) {
+            const finalPrices = solvePricesGivenPremiums(prems, tauJ, sigma, activeMCOs);
+            const final = calcDemand(prems, activeMCOs, sigma);
+            return { prems, prices: finalPrices, shares: final.sh, csh: final.csh, nsh: final.nsh, iters: iter + 1, converged: true };
+        }
+    }
+    const finalPrices = solvePricesGivenPremiums(prems, tauJ, sigma, activeMCOs);
+    const final = calcDemand(prems, activeMCOs, sigma);
+    return { prems, prices: finalPrices, shares: final.sh, csh: final.csh, nsh: final.nsh, iters: MAX_ITER, converged: false };
+}
+
+// =============================================================
+// UI
+// =============================================================
+const logEl = document.getElementById('log');
+function log(msg, cls = '') {
+    const s = document.createElement('span'); s.className = cls;
+    s.textContent = msg + '\n'; logEl.appendChild(s); logEl.scrollTop = logEl.scrollHeight;
+}
+function clearLog() { logEl.innerHTML = ''; }
+
+for (const id of ['tauPhi','tauJ','sigma']) {
+    const el = document.getElementById(id), v = document.getElementById(id+'Val');
+    el.addEventListener('input', () => { v.textContent = Number(el.value).toFixed(2); });
+}
+function P() {
+    return { tauPhi: +document.getElementById('tauPhi').value, tauJ: +document.getElementById('tauJ').value,
+             sigma: +document.getElementById('sigma').value, removal: document.getElementById('removal').value };
+}
+
+function runSingle() {
+    clearLog();
+    const { tauPhi, tauJ, sigma, removal } = P();
+    const ALL = ['bs','kaiser','bc'];
+    const CF = removal === 'kaiser' ? ['bs','bc'] : ['bs','kaiser'];
+
+    log(`=== SINGLE TEST ===  τᵠ=${tauPhi} τⱼ=${tauJ} σ=${sigma} remove=${removal}`, 'info');
+    log('');
+
+    const t0 = performance.now();
+    const base = solveEquilibrium(tauPhi, tauJ, sigma, ALL);
+    const cf = solveEquilibrium(tauPhi, tauJ, sigma, CF);
+    log(`Time: ${(performance.now()-t0).toFixed(0)}ms`, 'info');
+    log(`Base: ${base.converged?'CONVERGED':'FAILED'} (${base.iters} iters)`, base.converged?'ok':'fail');
+    log(`CF:   ${cf.converged?'CONVERGED':'FAILED'} (${cf.iters} iters)`, cf.converged?'ok':'fail');
+    log('');
+
+    log('--- BASELINE ---', 'info');
+    log(`${'MCO'.padEnd(8)} ${'Prem'.padStart(8)} ${'HPrice'.padStart(8)} ${'Share'.padStart(8)} ${'s|nest'.padStart(8)} ${'Margin'.padStart(8)} ${'Recap'.padStart(8)}`, 'info');
+    for (const m of ALL) {
+        const margin = base.prems[m] - ETA[m] - AR * base.prices[m];
+        const rho = recapture(m, base.prems, base.prices, ALL, sigma);
+        log(`${m.padEnd(8)} ${('$'+Math.round(base.prems[m])).padStart(8)} ${('$'+Math.round(base.prices[m])).padStart(8)} ${(base.shares[m]*100).toFixed(1).padStart(7)}% ${(base.csh[m]*100).toFixed(1).padStart(7)}% ${('$'+Math.round(margin)).padStart(8)} ${('$'+Math.round(rho)).padStart(8)}`, 'num');
+    }
+    log('');
+
+    log('--- COUNTERFACTUAL ---', 'info');
+    for (const m of CF) {
+        const margin = cf.prems[m] - ETA[m] - AR * cf.prices[m];
+        const rho = recapture(m, cf.prems, cf.prices, CF, sigma);
+        log(`${m.padEnd(8)} ${('$'+Math.round(cf.prems[m])).padStart(8)} ${('$'+Math.round(cf.prices[m])).padStart(8)} ${(cf.shares[m]*100).toFixed(1).padStart(7)}% ${(cf.csh[m]*100).toFixed(1).padStart(7)}% ${('$'+Math.round(margin)).padStart(8)} ${('$'+Math.round(rho)).padStart(8)}`, 'num');
+    }
+    log('');
+
+    const pd = (cf.prems.bs - base.prems.bs) / base.prems.bs * 100;
+    const hd = (cf.prices.bs - base.prices.bs) / base.prices.bs * 100;
+    const sd = (cf.shares.bs - base.shares.bs) * 100;
+
+    log('--- BS CHANGES ---', 'info');
+    log(`Δ Premium:     ${pd>0?'+':''}${pd.toFixed(2)}%`, pd > 0 ? 'warn' : 'ok');
+    log(`Δ Hosp Price:  ${hd>0?'+':''}${hd.toFixed(2)}%`, hd > 0 ? 'warn' : 'ok');
+    log(`Δ Share:       ${sd>0?'+':''}${sd.toFixed(2)} pp`, 'num');
+    log(`Signs differ:  ${pd*hd<0 ? 'YES — curves can cross!' : 'No (same direction)'}`, pd*hd<0?'ok':'info');
+
+    log('');
+    log('--- SANITY CHECKS ---', 'info');
+    for (const m of ALL) {
+        const mg = base.prems[m] - ETA[m] - AR * base.prices[m];
+        log(`${m} margin: $${Math.round(mg)} ${mg>0?'✓':'⚠ NEGATIVE'}`, mg>0?'ok':'fail');
+    }
+    let tot = 0; for (const m of ALL) tot += base.shares[m];
+    log(`Outside option: ${((1-tot)*100).toFixed(1)}%`, (1-tot)>0.1?'ok':'warn');
+
+    // Tables
+    let html = '<table><thead><tr><th>MCO</th><th>Prem</th><th>HPrice</th><th>Share</th><th>Margin</th><th>ρ</th></tr></thead><tbody>';
+    for (const m of ALL) {
+        const mg = base.prems[m] - ETA[m] - AR * base.prices[m];
+        const rho = recapture(m, base.prems, base.prices, ALL, sigma);
+        html += `<tr><td>${m.toUpperCase()}</td><td>$${Math.round(base.prems[m]).toLocaleString()}</td><td>$${Math.round(base.prices[m]).toLocaleString()}</td><td>${(base.shares[m]*100).toFixed(1)}%</td><td>$${Math.round(mg).toLocaleString()}</td><td>$${Math.round(rho).toLocaleString()}</td></tr>`;
+    }
+    document.getElementById('eqT').innerHTML = html + '</tbody></table>';
+
+    const who = removal === 'kaiser' ? 'Kaiser' : 'Blue Cross';
+    let ch = `<p style="color:#78716b;margin-bottom:0.5rem;">Removing ${who}</p><table><thead><tr><th></th><th>Base</th><th>CF</th><th>Δ</th></tr></thead><tbody>`;
+    ch += `<tr><td>Premium</td><td>$${Math.round(base.prems.bs).toLocaleString()}</td><td>$${Math.round(cf.prems.bs).toLocaleString()}</td><td style="color:${pd>0?'#dc2626':'#059669'}">${pd>0?'+':''}${pd.toFixed(2)}%</td></tr>`;
+    ch += `<tr><td>Hosp Price</td><td>$${Math.round(base.prices.bs).toLocaleString()}</td><td>$${Math.round(cf.prices.bs).toLocaleString()}</td><td style="color:${hd>0?'#dc2626':'#059669'}">${hd>0?'+':''}${hd.toFixed(2)}%</td></tr>`;
+    ch += `<tr><td>Share</td><td>${(base.shares.bs*100).toFixed(1)}%</td><td>${(cf.shares.bs*100).toFixed(1)}%</td><td>${sd>0?'+':''}${sd.toFixed(1)} pp</td></tr>`;
+    document.getElementById('cfT').innerHTML = ch + '</tbody></table>';
+}
+
+function yieldUI() { return new Promise(r => setTimeout(r, 0)); }
+
+let running = false;
+function lockButtons(on) {
+    running = on;
+    for (const b of document.querySelectorAll('button')) b.disabled = on;
+}
+
+async function runSweep() {
+    if (running) return;
+    lockButtons(true);
+    clearLog();
+    const { tauJ, sigma, removal } = P();
+    const ALL = ['bs','kaiser','bc'];
+    const CF = removal === 'kaiser' ? ['bs','bc'] : ['bs','kaiser'];
+    const STEPS = 30;
+
+    log(`=== τᵠ SWEEP (${STEPS+1} pts) === τⱼ=${tauJ} σ=${sigma} remove=${removal}`, 'info');
+
+    const t0 = performance.now();
+    const data = [];
+    let fails = 0;
+
+    for (let i = 0; i <= STEPS; i++) {
+        const tp = 0.05 + (i / STEPS) * 0.90;
+        const base = solveEquilibrium(tp, tauJ, sigma, ALL);
+        const cf = solveEquilibrium(tp, tauJ, sigma, CF);
+        if (!base.converged || !cf.converged) fails++;
+
+        const pd = (cf.prems.bs - base.prems.bs) / base.prems.bs * 100;
+        const hd = (cf.prices.bs - base.prices.bs) / base.prices.bs * 100;
+        data.push({ tp, pd, hd });
+
+        log(`τᵠ=${tp.toFixed(2)}  ΔPrem=${(pd>0?'+':'')+pd.toFixed(1).padStart(7)}%  ΔHPrice=${(hd>0?'+':'')+hd.toFixed(1).padStart(7)}%  ${pd*hd<0?'← OPPOSITE SIGNS':''}`,
+            pd*hd<0?'ok':'num');
+
+        if (i % 5 === 0) await yieldUI();
+    }
+
+    log('');
+    log(`Done in ${(performance.now()-t0).toFixed(0)}ms. Failures: ${fails}/${STEPS+1}`, fails?'warn':'ok');
+
+    let signDiff = 0, premNeg = 0, priceNeg = 0;
+    for (const d of data) {
+        if (d.pd * d.hd < 0) signDiff++;
+        if (d.pd < -0.1) premNeg++;
+        if (d.hd < -0.1) priceNeg++;
+    }
+    log(`Points with opposite signs: ${signDiff}/${data.length}`, signDiff?'ok':'warn');
+    log(`Points with Δprem < 0: ${premNeg}`, premNeg?'ok':'info');
+    log(`Points with Δprice < 0: ${priceNeg}`, priceNeg?'ok':'info');
+
+    const ratios = data.filter(d=>Math.abs(d.pd)>0.01).map(d=>d.hd/d.pd);
+    if (ratios.length > 2) {
+        const spread = Math.max(...ratios) - Math.min(...ratios);
+        log(`Price/Prem ratio spread: ${spread.toFixed(2)} ${spread>0.5?'✓ independent curves':'⚠ nearly proportional'}`, spread>0.5?'ok':'warn');
+    }
+
+    drawChart('cP', data.map(d=>d.tp), data.map(d=>d.pd), '#d07a55');
+    drawChart('cH', data.map(d=>d.tp), data.map(d=>d.hd), '#4f46e5');
+    lockButtons(false);
+}
+
+async function runStress() {
+    if (running) return;
+    lockButtons(true);
+    clearLog();
+    log('=== FULL STRESS TEST ===', 'info');
+
+    const tps = [0.05,0.1,0.2,0.3,0.47,0.6,0.8,0.95];
+    const tjs = [0.1,0.25,0.35,0.5,0.7,0.9];
+    const sigs = [0.25,0.4,0.5,0.7,0.9];
+    const rms = ['kaiser','bc'];
+
+    let total=0, fails=0, oppSigns=0, premNegs=0, priceNegs=0;
+    const t0 = performance.now();
+
+    for (const sig of sigs) {
+        for (const tj of tjs) {
+            log(`Running σ=${sig} τⱼ=${tj} ...`, 'info');
+            await yieldUI();
+            for (const rm of rms) {
+                const ALL = ['bs','kaiser','bc'];
+                const CF = rm==='kaiser'?['bs','bc']:['bs','kaiser'];
+                for (const tp of tps) {
+                    total++;
+                    const base = solveEquilibrium(tp, tj, sig, ALL);
+                    const cf = solveEquilibrium(tp, tj, sig, CF);
+                    if (!base.converged||!cf.converged) {
+                        fails++;
+                        log(`FAIL σ=${sig} τᵠ=${tp} τⱼ=${tj} rm=${rm} (${base.iters}/${cf.iters})`, 'fail');
+                    }
+                    const pd = (cf.prems.bs-base.prems.bs)/base.prems.bs*100;
+                    const hd = (cf.prices.bs-base.prices.bs)/base.prices.bs*100;
+                    if (pd*hd < 0) oppSigns++;
+                    if (pd < -0.1) premNegs++;
+                    if (hd < -0.1) priceNegs++;
+                }
+            }
+        }
+    }
+
+    const ms = (performance.now()-t0).toFixed(0);
+    log('');
+    log('=== RESULTS ===', 'info');
+    log(`Total solve pairs: ${total}`, 'num');
+    log(`Convergence failures: ${fails} (${(fails/total*100).toFixed(1)}%)`, fails?'fail':'ok');
+    log(`Opposite-sign cases: ${oppSigns} (${(oppSigns/total*100).toFixed(1)}%)`, oppSigns?'ok':'warn');
+    log(`Negative Δprem cases: ${premNegs} (${(premNegs/total*100).toFixed(1)}%)`, 'info');
+    log(`Negative Δprice cases: ${priceNegs} (${(priceNegs/total*100).toFixed(1)}%)`, priceNegs?'ok':'info');
+    log(`Time: ${ms}ms (${(ms/total).toFixed(1)}ms per pair)`, 'info');
+
+    log('');
+    log('=== ASYMMETRY CHECK (σ=0.5, τᵠ=0.47, τⱼ=0.35) ===', 'info');
+    const ALL = ['bs','kaiser','bc'];
+    const base = solveEquilibrium(0.47, 0.35, 0.5, ALL);
+    const cfK = solveEquilibrium(0.47, 0.35, 0.5, ['bs','bc']);
+    const cfBC = solveEquilibrium(0.47, 0.35, 0.5, ['bs','kaiser']);
+    const kP=(cfK.prems.bs-base.prems.bs)/base.prems.bs*100;
+    const kH=(cfK.prices.bs-base.prices.bs)/base.prices.bs*100;
+    const bP=(cfBC.prems.bs-base.prems.bs)/base.prems.bs*100;
+    const bH=(cfBC.prices.bs-base.prices.bs)/base.prices.bs*100;
+
+    log(`Remove Kaiser:  ΔPrem=${kP>0?'+':''}${kP.toFixed(2)}%  ΔPrice=${kH>0?'+':''}${kH.toFixed(2)}%`, 'num');
+    log(`Remove BC:      ΔPrem=${bP>0?'+':''}${bP.toFixed(2)}%  ΔPrice=${bH>0?'+':''}${bH.toFixed(2)}%`, 'num');
+    log(`Paper targets:  Remove K: prem +16.6%, price +0.6%  |  Remove BC: prem -3.4%, price -8.9%`, 'info');
+    log('');
+    if (kP > bP) log('✓ Removing Kaiser has larger premium impact than removing BC', 'ok');
+    else log('⚠ Expected removing Kaiser to have larger premium impact', 'warn');
+    if (bH < kH) log('✓ Removing BC has more negative price impact (recapture effect)', 'ok');
+    else log('⚠ Expected removing BC to show recapture-driven price decrease', 'warn');
+    if (bP > 0 && bH < 0) log('✓ Remove BC: premium UP but price DOWN — curves cross!', 'ok');
+    else log('⚠ Remove BC: signs not opposite', 'warn');
+    lockButtons(false);
+}
+
+function drawChart(id, xs, ys, color) {
+    const c = document.getElementById(id), ctx = c.getContext('2d');
+    const W = c.width, H = c.height;
+    ctx.clearRect(0,0,W,H);
+    // Match page background
+    ctx.fillStyle = '#fafaf9';
+    ctx.fillRect(0,0,W,H);
+
+    const pad = {l:55,r:20,t:20,b:30};
+    const pW = W-pad.l-pad.r, pH = H-pad.t-pad.b;
+    const yMax = Math.max(Math.abs(Math.min(...ys)), Math.abs(Math.max(...ys)), 1) * 1.2;
+    const zY = pad.t + pH/2;
+
+    // Grid
+    ctx.strokeStyle='#e7e5e4'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad.l,zY); ctx.lineTo(pad.l+pW,zY); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+pH); ctx.stroke();
+
+    // Labels
+    ctx.fillStyle='#78716b'; ctx.font='10px Inter, system-ui, sans-serif'; ctx.textAlign='right';
+    ctx.fillText(`+${yMax.toFixed(0)}%`, pad.l-4, pad.t+10);
+    ctx.fillText('0%', pad.l-4, zY+4);
+    ctx.fillText(`−${yMax.toFixed(0)}%`, pad.l-4, pad.t+pH);
+    ctx.textAlign='center';
+    for (const v of [0.1,0.3,0.5,0.7,0.9]) {
+        const x = pad.l+((v-0.05)/0.90)*pW;
+        ctx.fillText(v.toFixed(1), x, pad.t+pH+16);
+        ctx.strokeStyle='#f5f5f4'; ctx.beginPath(); ctx.moveTo(x,pad.t); ctx.lineTo(x,pad.t+pH); ctx.stroke();
+    }
+    ctx.fillStyle='#57534e'; ctx.font='11px Inter, system-ui, sans-serif';
+    ctx.fillText('τᵠ', pad.l+pW/2, pad.t+pH+28);
+
+    // Zero line
+    ctx.strokeStyle='#d6d3d1'; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(pad.l,zY); ctx.lineTo(pad.l+pW,zY); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Curve
+    ctx.strokeStyle=color; ctx.lineWidth=2.5; ctx.beginPath();
+    for (let i=0;i<xs.length;i++){
+        const x=pad.l+((xs[i]-0.05)/0.90)*pW;
+        const y=zY-(ys[i]/yMax)*(pH/2);
+        if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+
+    // Fill to zero
+    ctx.globalAlpha=0.06; ctx.fillStyle=color; ctx.beginPath();
+    for(let i=0;i<xs.length;i++){const x=pad.l+((xs[i]-0.05)/0.90)*pW;const y=zY-(ys[i]/yMax)*(pH/2);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}
+    ctx.lineTo(pad.l+((xs[xs.length-1]-0.05)/0.90)*pW,zY);
+    ctx.lineTo(pad.l+((xs[0]-0.05)/0.90)*pW,zY);
+    ctx.closePath(); ctx.fill(); ctx.globalAlpha=1;
+}
+
+window.addEventListener('load', () => {
+    runSingle();
+    if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: '\\(', right: '\\)', display: false },
+                { left: '\\[', right: '\\]', display: true }
+            ],
+            throwOnError: false
+        });
+    }
+});
+</script>
+</body>
+</html>
