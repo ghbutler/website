@@ -49,32 +49,41 @@
         input[type="range"].slider-teal::-webkit-slider-thumb { background: #4a7c6f; }
 
         .eq-box {
-            font-size: 12px; background: #f8f8f6;
+            font-size: clamp(10px, 1.1vw, 13px); background: #f8f8f6;
             border-left: 2px solid #1e293b; padding: 12px 16px; line-height: 1.8;
         }
         .eq-box .katex { font-size: 0.95em; }
 
         .toggle-btn {
-            padding: 5px 14px; font-size: 10px; font-weight: 600;
+            padding: 5px 14px; font-size: clamp(9px, 0.9vw, 11px); font-weight: 600;
             letter-spacing: 0.05em; text-transform: uppercase;
             border: 1px solid #e2e8f0; transition: all 0.15s;
         }
         .toggle-btn.active { background: #1e293b; color: white; border-color: #1e293b; }
         .toggle-btn:not(.active) { background: white; color: #64748b; }
+
+        /* Adaptive spacing & sizing */
+        .panel-pad { padding: clamp(1rem, 2.5vw, 2rem); }
+        .body-text { font-size: clamp(10px, 1vw, 12px); }
+        .label-text { font-size: clamp(8px, 0.8vw, 10px); }
+        .section-gap { gap: clamp(1.25rem, 2vw, 2rem); }
+
+        /* KaTeX overflow protection on small screens */
+        .eq-box .katex-display { overflow-x: auto; overflow-y: hidden; }
     </style>
 </head>
-<body class="text-slate-800 p-6 md:p-10">
+<body class="text-slate-800 p-[clamp(1rem,3vw,2.5rem)]">
 
-<div x-data="app()" x-cloak class="max-w-6xl mx-auto space-y-8">
+<div x-data="app()" x-cloak class="w-full max-w-[min(90vw,80rem)] mx-auto space-y-[clamp(1.25rem,2vw,2rem)]">
 
     <!-- Header -->
     <header class="pb-5" style="border-bottom: 1px solid #e7e5e4;">
-        <h1 class="font-headline text-3xl font-bold text-slate-900 tracking-tight">Insurer Competition in Health Care Markets</h1>
-        <p class="text-xs text-slate-400 mt-1.5 font-body tracking-wide">Ho and Lee (2017, Section 2) — Bilateral Nash Bargaining & Counterfactuals</p>
+        <h1 class="font-headline font-bold text-slate-900 tracking-tight" style="font-size: clamp(1.4rem, 2.5vw, 2rem);">Insurer Competition in Health Care Markets</h1>
+        <p class="text-slate-400 mt-1.5 font-body tracking-wide label-text">Ho and Lee (2017, Section 2) — Bilateral Nash Bargaining & Counterfactuals</p>
     </header>
 
     <!-- Market Diagram -->
-    <section class="bg-white p-8 border border-warm-200">
+    <section class="bg-white panel-pad border border-warm-200">
         <h2 class="text-center text-[10px] font-body font-semibold text-slate-400 uppercase tracking-[0.2em] mb-6">Market Structure — Bilateral Nash Bargaining</h2>
         <p class="text-center text-[10px] text-slate-400 italic mb-4 -mt-4">
             Outcomes shown are changes to <strong class="text-slate-600">Blue Shield's</strong> premiums and negotiated hospital prices.
@@ -167,22 +176,22 @@
 
     <!-- Counterfactual Toggle -->
     <section class="bg-white p-5 border border-warm-200 flex items-center justify-center gap-4">
-        <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.15em]">Counterfactual</span>
+        <span class="label-text font-semibold text-slate-400 uppercase tracking-[0.15em]">Counterfactual</span>
         <button @click="removal = 'kaiser'" :class="removal === 'kaiser' ? 'active' : ''" class="toggle-btn">Remove Kaiser</button>
         <button @click="removal = 'bc'" :class="removal === 'bc' ? 'active' : ''" class="toggle-btn">Remove Blue Cross</button>
     </section>
 
     <!-- Main content grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 section-gap">
 
         <!-- Left 2/3: Panels -->
-        <div class="lg:col-span-2 space-y-8">
+        <div class="lg:col-span-2 space-y-[clamp(1.25rem,2vw,2rem)]">
 
             <!-- Combined Panel: Premiums & Hospital Prices -->
-            <div class="bg-white p-8 border border-warm-200">
+            <div class="bg-white panel-pad border border-warm-200">
                 <h3 class="font-headline text-lg font-bold text-slate-800 mb-0.5">Premiums & Hospital Prices</h3>
-                <p class="text-[10px] font-body text-slate-400 uppercase tracking-[0.15em] font-semibold mb-4">Equations 5–7 — Joint Outcomes for Blue Shield</p>
-                <p class="text-[11px] text-slate-500 leading-relaxed mb-4">
+                <p class="label-text font-body text-slate-400 uppercase tracking-[0.15em] font-semibold mb-4">Equations 5–7 — Joint Outcomes for Blue Shield</p>
+                <p class="body-text text-slate-500 leading-relaxed mb-4">
                     Predicted % change in <strong class="text-slate-600">Blue Shield's</strong> premiums <em>and</em> negotiated hospital prices
                     relative to baseline (all insurers present) from removing
                     <span x-text="removal === 'kaiser' ? 'Kaiser' : 'Blue Cross'" class="font-semibold text-slate-700"></span>.
@@ -190,7 +199,7 @@
                 </p>
 
                 <!-- Formulas side by side -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                <div class="grid grid-cols-1 gap-3 mb-5">
                     <div class="eq-box">
                         <span class="font-semibold text-slate-700">Eq. 5 (Premiums):</span>
                         $\Delta\varphi = \underbrace{\text{Comp.}}_{\color{#b91c1c}{\uparrow}} - \underbrace{\text{Leverage}}_{\color{#047857}{\downarrow}}$
@@ -297,14 +306,14 @@
                 <!-- Shared Controls -->
                 <div class="mt-5 grid grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-[10px] font-semibold text-slate-400 tracking-[0.1em] mb-2">
+                        <label class="block label-text font-semibold text-slate-400 tracking-[0.1em] mb-2">
                             &#964;<sup>&#966;</sup> (premium bargaining) = <span x-text="Number(tauPhi).toFixed(2)" class="text-slate-700"></span>
                         </label>
                         <input type="range" min="0.05" max="1" step="0.01" x-model.number="tauPhi"
                                class="w-full slider-blue">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-semibold text-slate-400 tracking-[0.1em] mb-2">
+                        <label class="block label-text font-semibold text-slate-400 tracking-[0.1em] mb-2">
                             &#964;<sub>j</sub> (hospital bargaining) = <span x-text="Number(tauJ).toFixed(2)" class="text-slate-700"></span>
                         </label>
                         <input type="range" min="0.01" max="1" step="0.01" x-model.number="tauJ"
@@ -314,10 +323,10 @@
             </div>
 
             <!-- Force Decomposition -->
-            <div class="bg-white p-8 border border-warm-200">
+            <div class="bg-white panel-pad border border-warm-200">
                 <h3 class="font-headline text-lg font-bold text-slate-800 mb-0.5">Force Decomposition</h3>
-                <p class="text-[10px] font-body text-slate-400 uppercase tracking-[0.15em] font-semibold mb-4">Current Parameters</p>
-                <p class="text-[11px] text-slate-500 mb-4">
+                <p class="label-text font-body text-slate-400 uppercase tracking-[0.15em] font-semibold mb-4">Current Parameters</p>
+                <p class="body-text text-slate-500 mb-4">
                     The two opposing forces from Eq. 5 at
                     &#964;<sup>&#966;</sup> = <span x-text="Number(tauPhi).toFixed(2)" class="font-semibold text-slate-700"></span>,
                     &#964;<sub>j</sub> = <span x-text="Number(tauJ).toFixed(2)" class="font-semibold text-slate-700"></span>.
@@ -361,9 +370,9 @@
             </div>
 
             <!-- Hospital Price Composition -->
-            <div class="bg-white p-8 border border-warm-200">
+            <div class="bg-white panel-pad border border-warm-200">
                 <h3 class="font-headline text-lg font-bold text-slate-800 mb-0.5">Hospital Price Composition</h3>
-                <p class="text-[10px] font-body text-slate-400 uppercase tracking-[0.15em] font-semibold mb-4">Equation 6 — Component Weights</p>
+                <p class="label-text font-body text-slate-400 uppercase tracking-[0.15em] font-semibold mb-4">Equation 6 — Component Weights</p>
 
                 <div class="flex gap-6 items-start">
                     <div class="flex-1">
@@ -383,7 +392,7 @@
                             <span class="absolute" style="left: 31%;">&#8593; &#964;<sub>BS</sub></span>
                             <span class="absolute" style="left: 38%;">&#8593; &#964;<sub>BC</sub></span>
                         </div>
-                        <div class="mt-2 text-[11px] text-slate-500">
+                        <div class="mt-2 body-text text-slate-500">
                             At &#964;<sub>j</sub> = <span x-text="Number(tauJ).toFixed(2)" class="font-semibold text-slate-700"></span>:
                             insurer-side = <strong class="text-slate-700" x-text="Math.round((1-tauJ)*100) + '%'"></strong>,
                             hospital-side = <strong class="text-slate-700" x-text="Math.round(tauJ*100) + '%'"></strong>.
@@ -407,12 +416,12 @@
                 <div class="w-8 h-0.5 bg-slate-800 mb-6"></div>
                 <div class="space-y-6">
                     <section>
-                        <h4 class="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.15em] mb-2">Premium Outcome (Eq. 5)</h4>
-                        <p class="text-[11px] leading-relaxed text-slate-600" x-text="logicText"></p>
+                        <h4 class="label-text font-semibold text-slate-400 uppercase tracking-[0.15em] mb-2">Premium Outcome (Eq. 5)</h4>
+                        <p class="body-text leading-relaxed text-slate-600" x-text="logicText"></p>
                     </section>
                     <section class="bg-warm-50 p-4 border-l-2 border-slate-300">
-                        <h4 class="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.15em] mb-2">Hospital Price Outcome (Eq. 6–7)</h4>
-                        <p class="text-[11px] leading-relaxed text-slate-600" x-text="priceLogicText"></p>
+                        <h4 class="label-text font-semibold text-slate-400 uppercase tracking-[0.15em] mb-2">Hospital Price Outcome (Eq. 6–7)</h4>
+                        <p class="body-text leading-relaxed text-slate-600" x-text="priceLogicText"></p>
                     </section>
                     <div class="pt-4 border-t border-warm-200 text-[10px] text-slate-400">
                         <p class="uppercase font-semibold tracking-[0.15em] mb-1.5">Paper Estimates (Table IV)</p>
@@ -426,7 +435,7 @@
         </div>
     </div>
 
-    <footer class="mt-10 text-center text-[10px] text-slate-400 pt-4" style="border-top: 1px solid #e7e5e4;">
+    <footer class="mt-10 text-center label-text text-slate-400 pt-4" style="border-top: 1px solid #e7e5e4;">
         Kate Ho and Robin S. Lee. "Insurer Competition in Health Care Markets." <em>Econometrica</em> 85, no. 2 (2017): 379–417. <a href="https://doi.org/10.3982/ECTA13570" class="underline hover:text-slate-600" target="_blank">doi:10.3982/ECTA13570</a>
     </footer>
 </div>
