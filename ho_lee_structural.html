@@ -261,17 +261,19 @@
         </section>
 
         <!-- Counterfactual Toggle -->
-        <section class="mt-8 bg-white p-5 border border-warm-200 flex flex-wrap items-center justify-center gap-4 rounded">
-            <span class="label-text font-semibold" style="color:#57534e;">Counterfactual Scenario:</span>
-            <button @click="removal='kaiser'; recompute()" :class="removal==='kaiser'?'toggle-btn active':'toggle-btn'" class="toggle-btn">
-                Remove Kaiser
-            </button>
-            <button @click="removal='bc'; recompute()" :class="removal==='bc'?'toggle-btn active':'toggle-btn'" class="toggle-btn">
-                Remove Blue Cross
-            </button>
-            <button @click="removal='none'; recompute()" :class="removal==='none'?'toggle-btn active':'toggle-btn'" class="toggle-btn">
-                All Three (Baseline)
-            </button>
+        <section class="mt-8 bg-white p-5 border border-warm-200 rounded" style="text-align:center;">
+            <p style="font-size:0.8125rem;color:#78716b;margin-bottom:0.75rem;">Simulate the insurer removal counterfactuals from Table VII of the paper:</p>
+            <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:0.75rem;">
+                <button @click="removal='none'; recompute()" :class="removal==='none'?'toggle-btn active':'toggle-btn'" class="toggle-btn">
+                    All Three (Baseline)
+                </button>
+                <button @click="removal='kaiser'; recompute()" :class="removal==='kaiser'?'toggle-btn active':'toggle-btn'" class="toggle-btn">
+                    Remove Kaiser
+                </button>
+                <button @click="removal='bc'; recompute()" :class="removal==='bc'?'toggle-btn active':'toggle-btn'" class="toggle-btn">
+                    Remove Blue Cross
+                </button>
+            </div>
         </section>
 
         <!-- Chart — Full Width -->
@@ -1166,7 +1168,7 @@ function hoLeeModel() {
         tauPhi: 0.47,
         tauBS: 0.31,
         tauBC: 0.38,
-        removal: 'kaiser',
+        removal: 'none',
         curveData: [],
         currentPremDelta: 0,
         currentPriceDelta: 0,
