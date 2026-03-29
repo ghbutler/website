@@ -34,59 +34,33 @@
         body { font-family: 'Inter', sans-serif; background: #fafaf9; }
         h1, h2, h3, .font-headline { font-family: 'Newsreader', serif; }
 
-        /* Refined slider styling */
         input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            height: 3px;
-            border-radius: 2px;
-            outline: none;
-            cursor: pointer;
+            -webkit-appearance: none; appearance: none;
+            height: 3px; border-radius: 2px; outline: none; cursor: pointer;
         }
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-            cursor: pointer;
+            -webkit-appearance: none; appearance: none;
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.15); cursor: pointer;
         }
         input[type="range"].slider-blue { background: #e2e8f0; }
         input[type="range"].slider-blue::-webkit-slider-thumb { background: #475569; }
         input[type="range"].slider-teal { background: #e2e8f0; }
         input[type="range"].slider-teal::-webkit-slider-thumb { background: #4a7c6f; }
 
-        /* Formula box — Stitch-inspired border-left accent */
         .eq-box {
-            font-size: 12px;
-            background: #f8f8f6;
-            border-left: 2px solid #1e293b;
-            padding: 12px 16px;
-            line-height: 1.8;
+            font-size: 12px; background: #f8f8f6;
+            border-left: 2px solid #1e293b; padding: 12px 16px; line-height: 1.8;
         }
         .eq-box .katex { font-size: 0.95em; }
 
-        /* Toggle buttons */
         .toggle-btn {
-            padding: 5px 14px;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            border: 1px solid #e2e8f0;
-            transition: all 0.15s;
+            padding: 5px 14px; font-size: 10px; font-weight: 600;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            border: 1px solid #e2e8f0; transition: all 0.15s;
         }
-        .toggle-btn.active {
-            background: #1e293b;
-            color: white;
-            border-color: #1e293b;
-        }
-        .toggle-btn:not(.active) {
-            background: white;
-            color: #64748b;
-        }
+        .toggle-btn.active { background: #1e293b; color: white; border-color: #1e293b; }
+        .toggle-btn:not(.active) { background: white; color: #64748b; }
     </style>
 </head>
 <body class="text-slate-800 p-6 md:p-10">
@@ -107,31 +81,30 @@
         </p>
         <svg viewBox="0 0 500 240" class="w-full max-w-2xl mx-auto">
             <defs>
-                <!-- Arrow tips -->
                 <marker id="arrSlateEnd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#475569"/></marker>
                 <marker id="arrSlateStart" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M10,0 L0,5 L10,10 Z" fill="#475569"/></marker>
                 <marker id="arrTealEnd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4a7c6f"/></marker>
                 <marker id="arrTealStart" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M10,0 L0,5 L10,10 Z" fill="#4a7c6f"/></marker>
             </defs>
 
-            <!-- === TOP TIER: Employer (CalPERS) === -->
+            <!-- TOP TIER: Employer (CalPERS) -->
             <rect x="175" y="10" width="150" height="36" rx="2" fill="#1e293b"/>
             <text x="250" y="33" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="Inter, sans-serif">Employer (CalPERS)</text>
 
-            <!-- === Employer ↔ Blue Shield (always active) === -->
+            <!-- Employer ↔ Blue Shield (always active) -->
             <line x1="210" y1="46" x2="100" y2="90" stroke="#475569" stroke-width="1.5"
                   marker-start="url(#arrSlateStart)" marker-end="url(#arrSlateEnd)"/>
             <text x="138" y="63" fill="#475569" font-size="8" font-family="Newsreader, serif" font-style="italic"
                   transform="rotate(-24 138 63)">premiums</text>
 
-            <!-- === Employer ↔ Kaiser (fades when removed) === -->
+            <!-- Employer ↔ Kaiser -->
             <g :opacity="removal === 'kaiser' ? 0.12 : 1" style="transition: opacity 0.2s;">
                 <line x1="250" y1="46" x2="250" y2="90" stroke="#475569" stroke-width="1.5"
                       marker-start="url(#arrSlateStart)" marker-end="url(#arrSlateEnd)"/>
                 <text x="256" y="73" fill="#475569" font-size="8" font-family="Newsreader, serif" font-style="italic">premiums</text>
             </g>
 
-            <!-- === Employer ↔ Blue Cross (fades when removed) === -->
+            <!-- Employer ↔ Blue Cross -->
             <g :opacity="removal === 'bc' ? 0.12 : 1" style="transition: opacity 0.2s;">
                 <line x1="290" y1="46" x2="400" y2="90" stroke="#475569" stroke-width="1.5"
                       marker-start="url(#arrSlateStart)" marker-end="url(#arrSlateEnd)"/>
@@ -139,12 +112,10 @@
                       transform="rotate(24 356 63)">premiums</text>
             </g>
 
-            <!-- === MIDDLE TIER: Insurers === -->
-            <!-- Blue Shield (always active) -->
+            <!-- MIDDLE TIER: Insurers -->
             <rect x="40" y="93" width="110" height="34" rx="2" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
             <text x="95" y="115" text-anchor="middle" fill="#334155" font-size="11" font-weight="600" font-family="Inter, sans-serif">Blue Shield</text>
 
-            <!-- Kaiser -->
             <rect x="195" y="93" width="110" height="34" rx="2"
                   :fill="removal === 'kaiser' ? '#f5f5f4' : '#f8fafc'"
                   :stroke="removal === 'kaiser' ? '#d6d3d1' : '#cbd5e1'" stroke-width="1"/>
@@ -153,7 +124,6 @@
             <text x="250" y="106" text-anchor="middle" font-size="7" font-family="Inter, sans-serif"
                   :fill="removal === 'kaiser' ? '#d6d3d1' : '#94a3b8'" x-show="removal === 'kaiser'">(removed)</text>
 
-            <!-- Blue Cross -->
             <rect x="350" y="93" width="110" height="34" rx="2"
                   :fill="removal === 'bc' ? '#f5f5f4' : '#f8fafc'"
                   :stroke="removal === 'bc' ? '#d6d3d1' : '#cbd5e1'" stroke-width="1"/>
@@ -162,20 +132,20 @@
             <text x="405" y="106" text-anchor="middle" font-size="7" font-family="Inter, sans-serif"
                   :fill="removal === 'bc' ? '#d6d3d1' : '#94a3b8'" x-show="removal === 'bc'">(removed)</text>
 
-            <!-- === Blue Shield ↔ Hospitals (always active) === -->
+            <!-- Blue Shield ↔ Hospitals -->
             <line x1="100" y1="127" x2="220" y2="185" stroke="#4a7c6f" stroke-width="1.5"
                   marker-start="url(#arrTealStart)" marker-end="url(#arrTealEnd)"/>
             <text x="140" y="164" fill="#4a7c6f" font-size="8" font-family="Newsreader, serif" font-style="italic"
                   transform="rotate(26 140 164)">hosp. prices</text>
 
-            <!-- === Kaiser ↔ Hospitals (fades when removed) === -->
+            <!-- Kaiser ↔ Hospitals -->
             <g :opacity="removal === 'kaiser' ? 0.12 : 1" style="transition: opacity 0.2s;">
                 <line x1="250" y1="127" x2="250" y2="185" stroke="#4a7c6f" stroke-width="1.5"
                       marker-start="url(#arrTealStart)" marker-end="url(#arrTealEnd)"/>
                 <text x="256" y="162" fill="#4a7c6f" font-size="8" font-family="Newsreader, serif" font-style="italic">hosp. prices</text>
             </g>
 
-            <!-- === Blue Cross ↔ Hospitals (fades when removed) === -->
+            <!-- Blue Cross ↔ Hospitals -->
             <g :opacity="removal === 'bc' ? 0.12 : 1" style="transition: opacity 0.2s;">
                 <line x1="400" y1="127" x2="280" y2="185" stroke="#4a7c6f" stroke-width="1.5"
                       marker-start="url(#arrTealStart)" marker-end="url(#arrTealEnd)"/>
@@ -183,14 +153,14 @@
                       transform="rotate(-26 355 164)">hosp. prices</text>
             </g>
 
-            <!-- === BOTTOM TIER: Hospitals === -->
+            <!-- BOTTOM TIER: Hospitals -->
             <rect x="185" y="188" width="130" height="36" rx="2" fill="#1e293b"/>
             <text x="250" y="211" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="Inter, sans-serif">Hospitals</text>
 
-            <!-- Bargaining level labels -->
-            <text x="10" y="70" fill="#94a3b8" font-size="7" font-family="Inter, sans-serif" font-weight="600" text-anchor="start">TIER 1</text>
+            <!-- Tier labels -->
+            <text x="10" y="70" fill="#94a3b8" font-size="7" font-family="Inter, sans-serif" font-weight="600">TIER 1</text>
             <text x="10" y="79" fill="#b8b5b0" font-size="6.5" font-family="Inter, sans-serif">Employer–Insurer</text>
-            <text x="10" y="160" fill="#94a3b8" font-size="7" font-family="Inter, sans-serif" font-weight="600" text-anchor="start">TIER 2</text>
+            <text x="10" y="160" fill="#94a3b8" font-size="7" font-family="Inter, sans-serif" font-weight="600">TIER 2</text>
             <text x="10" y="169" fill="#b8b5b0" font-size="6.5" font-family="Inter, sans-serif">Insurer–Hospital</text>
         </svg>
     </section>
@@ -208,68 +178,69 @@
         <!-- Left 2/3: Panels -->
         <div class="lg:col-span-2 space-y-8">
 
-            <!-- Panel 1: Net Premium Change -->
+            <!-- Combined Panel: Premiums & Hospital Prices -->
             <div class="bg-white p-8 border border-warm-200">
-                <h3 class="font-headline text-lg font-bold text-slate-800 mb-0.5">Net Change in Premiums</h3>
-                <p class="text-[10px] font-body text-slate-400 uppercase tracking-[0.15em] font-semibold mb-4">Equation 5 — Premium First-Order Condition</p>
+                <h3 class="font-headline text-lg font-bold text-slate-800 mb-0.5">Premiums & Hospital Prices</h3>
+                <p class="text-[10px] font-body text-slate-400 uppercase tracking-[0.15em] font-semibold mb-4">Equations 5–7 — Joint Outcomes for Blue Shield</p>
                 <p class="text-[11px] text-slate-500 leading-relaxed mb-4">
-                    Predicted % change in <strong class="text-slate-600">Blue Shield's</strong> premiums relative to baseline (all insurers present) from removing
-                    <span x-text="removal === 'kaiser' ? 'Kaiser' : 'Blue Cross'" class="font-semibold text-slate-700"></span>,
-                    as a function of &#964;<sup>&#966;</sup>.
-                    Curve shape responds to &#964;<sub>j</sub>.
+                    Predicted % change in <strong class="text-slate-600">Blue Shield's</strong> premiums <em>and</em> negotiated hospital prices
+                    relative to baseline (all insurers present) from removing
+                    <span x-text="removal === 'kaiser' ? 'Kaiser' : 'Blue Cross'" class="font-semibold text-slate-700"></span>.
+                    Both curves respond to the same bargaining parameters.
                 </p>
 
-                <!-- Formula -->
-                <div class="eq-box mb-5">
-                    <span class="font-semibold text-slate-700">Eq. 5 (Premium FOC):</span>
-                    $\Delta\varphi = \underbrace{\text{Competition}(\tau^{\varphi}, \tau_j)}_{\color{#b91c1c}{\text{raises premiums}}} - \underbrace{\text{Leverage}(\tau^{\varphi}, \tau_j)}_{\color{#047857}{\text{lowers premiums}}}$
-                    <br><br>
-                    <span class="text-[11px] text-slate-500">
-                        <span style="color:#b91c1c;">Competition</span> $= \Delta GFT^E \cdot (0.5 + \tau_j)$ — loss of competitive discipline; shaped by the removed insurer's market significance.
+                <!-- Formulas side by side -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                    <div class="eq-box">
+                        <span class="font-semibold text-slate-700">Eq. 5 (Premiums):</span>
+                        $\Delta\varphi = \underbrace{\text{Comp.}}_{\color{#b91c1c}{\uparrow}} - \underbrace{\text{Leverage}}_{\color{#047857}{\downarrow}}$
                         <br>
-                        <span style="color:#047857;">Leverage</span> $= \ln\!\bigl(1 + \tfrac{1-\tau^{\varphi}}{\tau^{\varphi}}\bigr) \cdot (0.8 + 0.4\tau_j)$ — employer's countervailing bargaining power.
-                    </span>
-                    <br><br>
-                    <span class="text-[10px] text-slate-400">
-                        <em>Full specification:</em>&ensp;
-                        $\Delta\varphi = \underset{\text{competition loss}}{\Bigl[\text{Peak} \cdot (\tau^{\varphi})^{0.6} \cdot (0.5 + \tau_j)\Bigr]} - \underset{\text{employer leverage}}{\Bigl[7 \cdot \ln\!\bigl(1 + \tfrac{1-\tau^{\varphi}}{\tau^{\varphi}}\bigr) \cdot (0.8 + 0.4\tau_j)\Bigr]}$
+                        <span class="text-[10px] text-slate-400">
+                            $\text{Peak} \cdot (\tau^{\varphi})^{0.6}(0.5 + \tau_j) - 7\ln\!\bigl(1 + \tfrac{1-\tau^{\varphi}}{\tau^{\varphi}}\bigr)(0.8 + 0.4\tau_j)$
+                        </span>
+                    </div>
+                    <div class="eq-box">
+                        <span class="font-semibold text-slate-700">Eq. 6–7 (Hosp. Prices):</span>
+                        $\Delta p = \underbrace{(1-\tau_j)\text{Pass-thru}}_{\color{#1e40af}{\uparrow}} - \underbrace{\tau_j \cdot L}_{\color{#047857}{\downarrow}}$
                         <br>
-                        where Peak = 24 (Kaiser) or 8 (Blue Cross), reflecting each insurer's competitive significance.
-                    </span>
+                        <span class="text-[10px] text-slate-400">
+                            $(1-\tau_j) \cdot 0.5\Delta\varphi - \tau_j \cdot L$, where $L$ = 9 (Kaiser) or 3 (Blue Cross)
+                        </span>
+                    </div>
                 </div>
 
-                <!-- SVG: Net premium change curve -->
-                <svg viewBox="0 0 440 260" class="w-full rounded" style="background: #fafaf9;">
+                <!-- Combined SVG chart -->
+                <svg viewBox="0 0 440 280" class="w-full rounded" style="background: #fafaf9;">
                     <!-- Y axis -->
                     <line x1="40" y1="30" x2="40" y2="230" stroke="#94a3b8" stroke-width="0.5"/>
-                    <!-- X axis (zero line, solid) -->
+                    <!-- X axis (zero line) -->
                     <line x1="40" y1="130" x2="420" y2="130" stroke="#94a3b8" stroke-width="0.5"/>
 
-                    <!-- Y-axis ticks -->
+                    <!-- Y-axis ticks (unified scale) -->
                     <text x="34" y="133" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif">0%</text>
-                    <g x-show="niceNetInt() < netScale() * 0.95">
-                        <line x1="36" :y1="netToY(niceNetInt())" x2="40" :y2="netToY(niceNetInt())" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="netToY(niceNetInt()) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'+' + Math.round(niceNetInt()) + '%'"></text>
+                    <g x-show="niceInt() < uniScale() * 0.95">
+                        <line x1="36" :y1="uniToY(niceInt())" x2="40" :y2="uniToY(niceInt())" stroke="#d6d3d1" stroke-width="0.5"/>
+                        <text x="34" :y="uniToY(niceInt()) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'+' + Math.round(niceInt()) + '%'"></text>
                     </g>
-                    <g x-show="niceNetInt() * 2 < netScale() * 0.95">
-                        <line x1="36" :y1="netToY(niceNetInt()*2)" x2="40" :y2="netToY(niceNetInt()*2)" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="netToY(niceNetInt()*2) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'+' + Math.round(niceNetInt()*2) + '%'"></text>
+                    <g x-show="niceInt() * 2 < uniScale() * 0.95">
+                        <line x1="36" :y1="uniToY(niceInt()*2)" x2="40" :y2="uniToY(niceInt()*2)" stroke="#d6d3d1" stroke-width="0.5"/>
+                        <text x="34" :y="uniToY(niceInt()*2) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'+' + Math.round(niceInt()*2) + '%'"></text>
                     </g>
-                    <g x-show="niceNetInt() * 3 < netScale() * 0.95">
-                        <line x1="36" :y1="netToY(niceNetInt()*3)" x2="40" :y2="netToY(niceNetInt()*3)" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="netToY(niceNetInt()*3) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'+' + Math.round(niceNetInt()*3) + '%'"></text>
+                    <g x-show="niceInt() * 3 < uniScale() * 0.95">
+                        <line x1="36" :y1="uniToY(niceInt()*3)" x2="40" :y2="uniToY(niceInt()*3)" stroke="#d6d3d1" stroke-width="0.5"/>
+                        <text x="34" :y="uniToY(niceInt()*3) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'+' + Math.round(niceInt()*3) + '%'"></text>
                     </g>
-                    <g x-show="niceNetInt() < netScale() * 0.95">
-                        <line x1="36" :y1="netToY(-niceNetInt())" x2="40" :y2="netToY(-niceNetInt())" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="netToY(-niceNetInt()) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'-' + Math.round(niceNetInt()) + '%'"></text>
+                    <g x-show="niceInt() < uniScale() * 0.95">
+                        <line x1="36" :y1="uniToY(-niceInt())" x2="40" :y2="uniToY(-niceInt())" stroke="#d6d3d1" stroke-width="0.5"/>
+                        <text x="34" :y="uniToY(-niceInt()) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'-' + Math.round(niceInt()) + '%'"></text>
                     </g>
-                    <g x-show="niceNetInt() * 2 < netScale() * 0.95">
-                        <line x1="36" :y1="netToY(-niceNetInt()*2)" x2="40" :y2="netToY(-niceNetInt()*2)" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="netToY(-niceNetInt()*2) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'-' + Math.round(niceNetInt()*2) + '%'"></text>
+                    <g x-show="niceInt() * 2 < uniScale() * 0.95">
+                        <line x1="36" :y1="uniToY(-niceInt()*2)" x2="40" :y2="uniToY(-niceInt()*2)" stroke="#d6d3d1" stroke-width="0.5"/>
+                        <text x="34" :y="uniToY(-niceInt()*2) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'-' + Math.round(niceInt()*2) + '%'"></text>
                     </g>
-                    <g x-show="niceNetInt() * 3 < netScale() * 0.95">
-                        <line x1="36" :y1="netToY(-niceNetInt()*3)" x2="40" :y2="netToY(-niceNetInt()*3)" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="netToY(-niceNetInt()*3) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'-' + Math.round(niceNetInt()*3) + '%'"></text>
+                    <g x-show="niceInt() * 3 < uniScale() * 0.95">
+                        <line x1="36" :y1="uniToY(-niceInt()*3)" x2="40" :y2="uniToY(-niceInt()*3)" stroke="#d6d3d1" stroke-width="0.5"/>
+                        <text x="34" :y="uniToY(-niceInt()*3) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'-' + Math.round(niceInt()*3) + '%'"></text>
                     </g>
 
                     <!-- X-axis ticks -->
@@ -285,7 +256,7 @@
                     <text :x="tToX(1.0)" y="143" font-size="7" fill="#94a3b8" text-anchor="middle" font-family="Inter, sans-serif">1.0</text>
 
                     <!-- Axis labels -->
-                    <text x="14" y="130" font-size="9" fill="#94a3b8" text-anchor="middle" font-family="Newsreader, serif" font-style="italic" transform="rotate(-90 14 130)">&#916; Premium (%)</text>
+                    <text x="14" y="130" font-size="9" fill="#94a3b8" text-anchor="middle" font-family="Newsreader, serif" font-style="italic" transform="rotate(-90 14 130)">&#916; from Baseline (%)</text>
                     <text x="230" y="250" font-size="9" fill="#94a3b8" text-anchor="middle" font-family="Newsreader, serif" font-style="italic">
                         &#964;<tspan baseline-shift="super" font-size="7">&#966;</tspan> (Premium Bargaining Parameter)
                     </text>
@@ -295,19 +266,35 @@
                     <text :x="tToX(0.47) + 3" y="38" font-size="6.5" fill="#b8b5b0" font-family="Inter, sans-serif">Paper est.</text>
                     <text :x="tToX(0.47) + 3" y="46" font-size="6.5" fill="#b8b5b0" font-family="Inter, sans-serif">&#964;&#7520; = 0.47</text>
 
-                    <!-- Net premium curve -->
-                    <path :d="buildNetCurvePath(tauJ, removal)" fill="none" stroke="#1e293b" stroke-width="2"/>
+                    <!-- Premium curve (dark slate) -->
+                    <path :d="buildNetCurvePath()" fill="none" stroke="#1e293b" stroke-width="2"/>
 
-                    <!-- Current position -->
+                    <!-- Hospital price curve (teal) -->
+                    <path :d="buildPriceCurvePath()" fill="none" stroke="#4a7c6f" stroke-width="2" stroke-dasharray="6 3"/>
+
+                    <!-- Current position line -->
                     <line :x1="tToX(tauPhi)" y1="30" :x2="tToX(tauPhi)" y2="230" stroke="#1e293b" stroke-width="0.5" opacity="0.15"/>
-                    <circle :cx="tToX(tauPhi)" :cy="netToY(premiumVal(tauPhi, tauJ))" r="4" fill="#1e293b" stroke="white" stroke-width="1.5"/>
-                    <text :x="tToX(tauPhi) + 10" :y="netToY(premiumVal(tauPhi, tauJ)) + 4"
-                          font-size="11" font-weight="600" font-family="Inter, sans-serif"
-                          :fill="premiumVal(tauPhi, tauJ) > 1 ? '#1e293b' : (premiumVal(tauPhi, tauJ) < -1 ? '#b91c1c' : '#94a3b8')"
-                          x-text="(premiumVal(tauPhi, tauJ) > 0 ? '+' : '') + premiumVal(tauPhi, tauJ).toFixed(1) + '%'"></text>
+
+                    <!-- Premium dot + label -->
+                    <circle :cx="tToX(tauPhi)" :cy="uniToY(premiumVal(tauPhi, tauJ))" r="4" fill="#1e293b" stroke="white" stroke-width="1.5"/>
+                    <text :x="tToX(tauPhi) + 10" :y="uniToY(premiumVal(tauPhi, tauJ)) + 4"
+                          font-size="10" font-weight="600" font-family="Inter, sans-serif" fill="#1e293b"
+                          x-text="'Prem ' + (premiumVal(tauPhi, tauJ) > 0 ? '+' : '') + premiumVal(tauPhi, tauJ).toFixed(1) + '%'"></text>
+
+                    <!-- Hospital price dot + label -->
+                    <circle :cx="tToX(tauPhi)" :cy="uniToY(priceChangeVal(tauPhi, tauJ))" r="4" fill="#4a7c6f" stroke="white" stroke-width="1.5"/>
+                    <text :x="tToX(tauPhi) + 10" :y="uniToY(priceChangeVal(tauPhi, tauJ)) + 4"
+                          font-size="10" font-weight="600" font-family="Inter, sans-serif" fill="#4a7c6f"
+                          x-text="'Price ' + (priceChangeVal(tauPhi, tauJ) > 0 ? '+' : '') + priceChangeVal(tauPhi, tauJ).toFixed(1) + '%'"></text>
+
+                    <!-- Legend -->
+                    <line x1="50" y1="262" x2="70" y2="262" stroke="#1e293b" stroke-width="2"/>
+                    <text x="74" y="265" font-size="8" fill="#64748b" font-family="Inter, sans-serif">&#916; Premiums (Eq. 5)</text>
+                    <line x1="200" y1="262" x2="220" y2="262" stroke="#4a7c6f" stroke-width="2" stroke-dasharray="6 3"/>
+                    <text x="224" y="265" font-size="8" fill="#64748b" font-family="Inter, sans-serif">&#916; Hosp. Prices (Eq. 6–7)</text>
                 </svg>
 
-                <!-- Panel 1 Controls -->
+                <!-- Shared Controls -->
                 <div class="mt-5 grid grid-cols-2 gap-6">
                     <div>
                         <label class="block text-[10px] font-semibold text-slate-400 tracking-[0.1em] mb-2">
@@ -346,155 +333,34 @@
                     <!-- Center line -->
                     <line x1="70" y1="88" x2="330" y2="88" stroke="#d6d3d1" stroke-width="0.5"/>
 
-                    <!-- Competition bar (up = raises premiums) -->
-                    <rect x="100" :y="88 - forceBarH('comp', tauPhi, tauJ)" width="80"
-                          :height="Math.max(forceBarH('comp', tauPhi, tauJ), 1)"
+                    <!-- Competition bar -->
+                    <rect x="100" :y="88 - forceBarH('comp')" width="80"
+                          :height="Math.max(forceBarH('comp'), 1)"
                           fill="#b91c1c" rx="2" opacity="0.8"/>
-                    <text x="140" :y="Math.max(88 - forceBarH('comp', tauPhi, tauJ) - 5, 24)"
+                    <text x="140" :y="Math.max(88 - forceBarH('comp') - 5, 24)"
                           text-anchor="middle" font-size="10" font-weight="600" fill="#b91c1c" font-family="Inter, sans-serif"
                           x-text="compMag(tauPhi).toFixed(1) + '%'"></text>
 
-                    <!-- Leverage bar (down = lowers premiums) -->
+                    <!-- Leverage bar -->
                     <rect x="220" y="88" width="80"
-                          :height="Math.max(forceBarH('lev', tauPhi, tauJ), 1)"
+                          :height="Math.max(forceBarH('lev'), 1)"
                           fill="#047857" rx="2" opacity="0.8"/>
-                    <text x="260" :y="Math.min(88 + forceBarH('lev', tauPhi, tauJ) + 14, 168)"
+                    <text x="260" :y="Math.min(88 + forceBarH('lev') + 14, 168)"
                           text-anchor="middle" font-size="10" font-weight="600" fill="#047857" font-family="Inter, sans-serif"
                           x-text="leverageMag(tauPhi).toFixed(1) + '%'"></text>
 
-                    <!-- Legend row -->
+                    <!-- Legend -->
                     <rect x="80" y="176" width="8" height="8" rx="1" fill="#b91c1c" opacity="0.8"/>
                     <text x="92" y="184" font-size="8" fill="#94a3b8" font-family="Inter, sans-serif">Competition (raises premiums)</text>
                     <rect x="235" y="176" width="8" height="8" rx="1" fill="#047857" opacity="0.8"/>
                     <text x="247" y="184" font-size="8" fill="#94a3b8" font-family="Inter, sans-serif">Employer leverage (lowers premiums)</text>
 
-                    <!-- Removal label -->
                     <text x="200" y="194" text-anchor="middle" font-size="7" fill="#d6d3d1" font-family="Inter, sans-serif"
                           x-text="'Counterfactual: remove ' + (removal === 'kaiser' ? 'Kaiser' : 'Blue Cross')"></text>
                 </svg>
             </div>
 
-            <!-- Panel 2: Hospital Price Change -->
-            <div class="bg-white p-8 border border-warm-200">
-                <h3 class="font-headline text-lg font-bold text-slate-800 mb-0.5">Net Change in Hospital Prices</h3>
-                <p class="text-[10px] font-body text-slate-400 uppercase tracking-[0.15em] font-semibold mb-4">Equations 6–7 — Hospital Price Response</p>
-                <p class="text-[11px] text-slate-500 leading-relaxed mb-4">
-                    % change in <strong class="text-slate-600">Blue Shield's</strong> negotiated hospital prices relative to baseline (all insurers present) when
-                    <span x-text="removal === 'kaiser' ? 'Kaiser' : 'Blue Cross'" class="font-semibold text-slate-700"></span>
-                    is removed. Two channels: premium pass-through (Eq. 6) and insurer leverage shift (Eq. 7).
-                </p>
-
-                <!-- Formula -->
-                <div class="eq-box mb-5">
-                    <span class="font-semibold text-slate-700">Eq. 6–7 (Hospital Price Response):</span>
-                    $\Delta p = \underbrace{(1-\tau_j) \cdot \text{PremiumEffect}(\Delta\varphi)}_{\color{#1e40af}{\text{pass-through}}} - \underbrace{\tau_j \cdot \text{LeverageShift}}_{\color{#047857}{\text{bargaining gain}}}$
-                    <br><br>
-                    <span class="text-[11px] text-slate-500">
-                        <span style="color:#1e40af;">Premium effect</span>: higher premiums raise insurer willingness to pay for hospital access.
-                        <br>
-                        <span style="color:#047857;">Leverage shift</span>: fewer insurers $\Rightarrow$ remaining ones have better outside options $\Rightarrow$ prices fall.
-                    </span>
-                    <br><br>
-                    <span class="text-[10px] text-slate-400">
-                        <em>Full specification:</em>&ensp;
-                        $\Delta p = (1 - \tau_j) \cdot 0.5 \cdot \Delta\varphi \;-\; \tau_j \cdot L$
-                        <br>
-                        where $L$ = 9 (Kaiser) or 3 (Blue Cross), reflecting each insurer's leverage significance, and $\Delta\varphi$ is the net premium change from Eq. 5.
-                    </span>
-                </div>
-
-                <!-- SVG: Net hospital price change curve -->
-                <svg viewBox="0 0 440 260" class="w-full rounded" style="background: #fafaf9;">
-                    <!-- Y axis -->
-                    <line x1="40" y1="30" x2="40" y2="230" stroke="#94a3b8" stroke-width="0.5"/>
-                    <!-- X axis (zero line, solid) -->
-                    <line x1="40" y1="130" x2="420" y2="130" stroke="#94a3b8" stroke-width="0.5"/>
-
-                    <!-- Y-axis ticks -->
-                    <text x="34" y="133" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif">0%</text>
-                    <g x-show="nicePriceInt() < priceScale() * 0.95">
-                        <line x1="36" :y1="priceToY(nicePriceInt())" x2="40" :y2="priceToY(nicePriceInt())" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="priceToY(nicePriceInt()) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'+' + Math.round(nicePriceInt()) + '%'"></text>
-                    </g>
-                    <g x-show="nicePriceInt() * 2 < priceScale() * 0.95">
-                        <line x1="36" :y1="priceToY(nicePriceInt()*2)" x2="40" :y2="priceToY(nicePriceInt()*2)" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="priceToY(nicePriceInt()*2) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'+' + Math.round(nicePriceInt()*2) + '%'"></text>
-                    </g>
-                    <g x-show="nicePriceInt() * 3 < priceScale() * 0.95">
-                        <line x1="36" :y1="priceToY(nicePriceInt()*3)" x2="40" :y2="priceToY(nicePriceInt()*3)" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="priceToY(nicePriceInt()*3) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'+' + Math.round(nicePriceInt()*3) + '%'"></text>
-                    </g>
-                    <g x-show="nicePriceInt() < priceScale() * 0.95">
-                        <line x1="36" :y1="priceToY(-nicePriceInt())" x2="40" :y2="priceToY(-nicePriceInt())" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="priceToY(-nicePriceInt()) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'-' + Math.round(nicePriceInt()) + '%'"></text>
-                    </g>
-                    <g x-show="nicePriceInt() * 2 < priceScale() * 0.95">
-                        <line x1="36" :y1="priceToY(-nicePriceInt()*2)" x2="40" :y2="priceToY(-nicePriceInt()*2)" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="priceToY(-nicePriceInt()*2) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'-' + Math.round(nicePriceInt()*2) + '%'"></text>
-                    </g>
-                    <g x-show="nicePriceInt() * 3 < priceScale() * 0.95">
-                        <line x1="36" :y1="priceToY(-nicePriceInt()*3)" x2="40" :y2="priceToY(-nicePriceInt()*3)" stroke="#d6d3d1" stroke-width="0.5"/>
-                        <text x="34" :y="priceToY(-nicePriceInt()*3) + 3" font-size="7" fill="#94a3b8" text-anchor="end" font-family="Inter, sans-serif" x-text="'-' + Math.round(nicePriceInt()*3) + '%'"></text>
-                    </g>
-
-                    <!-- X-axis ticks -->
-                    <line :x1="tToX(0.2)" y1="130" :x2="tToX(0.2)" y2="134" stroke="#94a3b8" stroke-width="0.5"/>
-                    <text :x="tToX(0.2)" y="143" font-size="7" fill="#94a3b8" text-anchor="middle" font-family="Inter, sans-serif">0.2</text>
-                    <line :x1="tToX(0.4)" y1="130" :x2="tToX(0.4)" y2="134" stroke="#94a3b8" stroke-width="0.5"/>
-                    <text :x="tToX(0.4)" y="143" font-size="7" fill="#94a3b8" text-anchor="middle" font-family="Inter, sans-serif">0.4</text>
-                    <line :x1="tToX(0.6)" y1="130" :x2="tToX(0.6)" y2="134" stroke="#94a3b8" stroke-width="0.5"/>
-                    <text :x="tToX(0.6)" y="143" font-size="7" fill="#94a3b8" text-anchor="middle" font-family="Inter, sans-serif">0.6</text>
-                    <line :x1="tToX(0.8)" y1="130" :x2="tToX(0.8)" y2="134" stroke="#94a3b8" stroke-width="0.5"/>
-                    <text :x="tToX(0.8)" y="143" font-size="7" fill="#94a3b8" text-anchor="middle" font-family="Inter, sans-serif">0.8</text>
-                    <line :x1="tToX(1.0)" y1="130" :x2="tToX(1.0)" y2="134" stroke="#94a3b8" stroke-width="0.5"/>
-                    <text :x="tToX(1.0)" y="143" font-size="7" fill="#94a3b8" text-anchor="middle" font-family="Inter, sans-serif">1.0</text>
-
-                    <!-- Axis labels -->
-                    <text x="14" y="130" font-size="9" fill="#94a3b8" text-anchor="middle" font-family="Newsreader, serif" font-style="italic"
-                          transform="rotate(-90 14 130)">&#916; Hosp. Price (%)</text>
-                    <text x="230" y="250" font-size="9" fill="#94a3b8" text-anchor="middle" font-family="Newsreader, serif" font-style="italic">
-                        &#964;<tspan baseline-shift="super" font-size="7">&#966;</tspan> (Premium Bargaining Parameter)
-                    </text>
-
-                    <!-- Paper estimate vertical -->
-                    <line :x1="tToX(0.47)" y1="30" :x2="tToX(0.47)" y2="230" stroke="#d6d3d1" stroke-width="1" stroke-dasharray="3"/>
-                    <text :x="tToX(0.47) + 3" y="38" font-size="6.5" fill="#b8b5b0" font-family="Inter, sans-serif">Paper est.</text>
-                    <text :x="tToX(0.47) + 3" y="46" font-size="6.5" fill="#b8b5b0" font-family="Inter, sans-serif">&#964;&#7520; = 0.47</text>
-
-                    <!-- Net hospital price curve -->
-                    <path :d="buildPriceCurvePath(tauJ2, removal)" fill="none" stroke="#1e293b" stroke-width="2"/>
-
-                    <!-- Current position dot -->
-                    <line :x1="tToX(tauPhi)" y1="30" :x2="tToX(tauPhi)" y2="230" stroke="#1e293b" stroke-width="0.5" opacity="0.15"/>
-                    <circle :cx="tToX(tauPhi)" :cy="priceToY(priceChangeVal(tauPhi, tauJ2))" r="4" fill="#1e293b" stroke="white" stroke-width="1.5"/>
-
-                    <!-- Value label -->
-                    <text :x="tToX(tauPhi) + 10" :y="priceToY(priceChangeVal(tauPhi, tauJ2)) + 4"
-                          font-size="11" font-weight="600" font-family="Inter, sans-serif"
-                          :fill="priceChangeVal(tauPhi, tauJ2) > 0.5 ? '#1e293b' : (priceChangeVal(tauPhi, tauJ2) < -0.5 ? '#7c3aed' : '#94a3b8')"
-                          x-text="(priceChangeVal(tauPhi, tauJ2) > 0 ? '+' : '') + priceChangeVal(tauPhi, tauJ2).toFixed(1) + '%'"></text>
-                </svg>
-
-                <!-- Panel 2 Controls -->
-                <div class="mt-5 grid grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-[10px] font-semibold text-slate-400 tracking-[0.1em] mb-2">
-                            &#964;<sup>&#966;</sup> (premium bargaining) = <span x-text="Number(tauPhi).toFixed(2)" class="text-slate-700"></span>
-                        </label>
-                        <input type="range" min="0.05" max="1" step="0.01" x-model.number="tauPhi"
-                               class="w-full slider-blue">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-semibold text-slate-400 tracking-[0.1em] mb-2">
-                            &#964;<sub>j</sub> (hospital bargaining) = <span x-text="Number(tauJ2).toFixed(2)" class="text-slate-700"></span>
-                        </label>
-                        <input type="range" min="0.01" max="1" step="0.01" x-model.number="tauJ2"
-                               class="w-full slider-teal">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Panel 3: Hospital Price Composition -->
+            <!-- Hospital Price Composition -->
             <div class="bg-white p-8 border border-warm-200">
                 <h3 class="font-headline text-lg font-bold text-slate-800 mb-0.5">Hospital Price Composition</h3>
                 <p class="text-[10px] font-body text-slate-400 uppercase tracking-[0.15em] font-semibold mb-4">Equation 6 — Component Weights</p>
@@ -506,10 +372,10 @@
                             <rect :x="barWidths.premEnroll" y="0" :width="barWidths.reinforcement" height="80" fill="#64748b"/>
                             <rect :x="barWidths.premEnroll + barWidths.reinforcement" y="0" :width="barWidths.cost" height="80" fill="#4a7c6f"/>
                             <rect :x="barWidths.premEnroll + barWidths.reinforcement + barWidths.cost" y="0" :width="barWidths.recapture" height="80" fill="#87b5a6"/>
-                            <text x="2" y="45" font-size="11" fill="white" font-weight="600" font-family="Inter, sans-serif" x-show="barWidths.premEnroll > 40" x-text="Math.round(0.7*(1-tauJ3)*100) + '%'"></text>
-                            <text :x="barWidths.premEnroll + 2" y="45" font-size="11" fill="white" font-weight="600" font-family="Inter, sans-serif" x-show="barWidths.reinforcement > 40" x-text="Math.round(0.3*(1-tauJ3)*100) + '%'"></text>
-                            <text :x="barWidths.premEnroll + barWidths.reinforcement + 2" y="45" font-size="11" fill="white" font-weight="600" font-family="Inter, sans-serif" x-show="barWidths.cost > 40" x-text="Math.round(0.7*tauJ3*100) + '%'"></text>
-                            <text :x="barWidths.premEnroll + barWidths.reinforcement + barWidths.cost + 2" y="45" font-size="11" fill="white" font-weight="600" font-family="Inter, sans-serif" x-show="barWidths.recapture > 40" x-text="Math.round(0.3*tauJ3*100) + '%'"></text>
+                            <text x="2" y="45" font-size="11" fill="white" font-weight="600" font-family="Inter, sans-serif" x-show="barWidths.premEnroll > 40" x-text="Math.round(0.7*(1-tauJ)*100) + '%'"></text>
+                            <text :x="barWidths.premEnroll + 2" y="45" font-size="11" fill="white" font-weight="600" font-family="Inter, sans-serif" x-show="barWidths.reinforcement > 40" x-text="Math.round(0.3*(1-tauJ)*100) + '%'"></text>
+                            <text :x="barWidths.premEnroll + barWidths.reinforcement + 2" y="45" font-size="11" fill="white" font-weight="600" font-family="Inter, sans-serif" x-show="barWidths.cost > 40" x-text="Math.round(0.7*tauJ*100) + '%'"></text>
+                            <text :x="barWidths.premEnroll + barWidths.reinforcement + barWidths.cost + 2" y="45" font-size="11" fill="white" font-weight="600" font-family="Inter, sans-serif" x-show="barWidths.recapture > 40" x-text="Math.round(0.3*tauJ*100) + '%'"></text>
                             <line x1="124" y1="0" x2="124" y2="80" stroke="white" stroke-width="0.5" stroke-dasharray="3" opacity="0.4"/>
                             <line x1="152" y1="0" x2="152" y2="80" stroke="white" stroke-width="0.5" stroke-dasharray="3" opacity="0.4"/>
                         </svg>
@@ -518,9 +384,9 @@
                             <span class="absolute" style="left: 38%;">&#8593; &#964;<sub>BC</sub></span>
                         </div>
                         <div class="mt-2 text-[11px] text-slate-500">
-                            At &#964;<sub>j</sub> = <span x-text="Number(tauJ3).toFixed(2)" class="font-semibold text-slate-700"></span>:
-                            insurer-side = <strong class="text-slate-700" x-text="Math.round((1-tauJ3)*100) + '%'"></strong>,
-                            hospital-side = <strong class="text-slate-700" x-text="Math.round(tauJ3*100) + '%'"></strong>.
+                            At &#964;<sub>j</sub> = <span x-text="Number(tauJ).toFixed(2)" class="font-semibold text-slate-700"></span>:
+                            insurer-side = <strong class="text-slate-700" x-text="Math.round((1-tauJ)*100) + '%'"></strong>,
+                            hospital-side = <strong class="text-slate-700" x-text="Math.round(tauJ*100) + '%'"></strong>.
                         </div>
                     </div>
                     <div class="w-28 flex flex-col justify-center gap-2.5 text-[10px] font-semibold text-slate-500 pt-2">
@@ -529,15 +395,6 @@
                         <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm" style="background:#4a7c6f"></span> Cost</div>
                         <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm" style="background:#87b5a6"></span> Recapture</div>
                     </div>
-                </div>
-
-                <!-- Panel 3 Controls -->
-                <div class="mt-5">
-                    <label class="block text-[10px] font-semibold text-slate-400 tracking-[0.1em] mb-2">
-                        &#964;<sub>j</sub> (hospital bargaining) = <span x-text="Number(tauJ3).toFixed(2)" class="text-slate-700"></span>
-                    </label>
-                    <input type="range" min="0.01" max="1" step="0.01" x-model.number="tauJ3"
-                           class="w-full slider-teal">
                 </div>
             </div>
 
@@ -576,14 +433,9 @@
 
 <script>
 function app() {
-    // ---- COORDINATE SYSTEM ----
     const X_MIN = 40, X_MAX = 420;
     const T_MIN = 0.05, T_MAX = 1.0;
-
-    // Chart y range [30, 230] for both panels
     const Y_TOP = 30, Y_BOT = 230, Y_MID = (Y_TOP + Y_BOT) / 2;
-
-    // Force bar max height
     const FORCE_MAX = 48;
 
     function tToX(t) {
@@ -600,7 +452,6 @@ function app() {
         return Math.log(1 + (1 - Math.max(t, 0.05)) / Math.max(t, 0.05));
     }
 
-    // ---- FORCE FUNCTIONS ----
     const COMP_KAISER_PEAK = 24;
     const COMP_BC_PEAK = 8;
     const COMP_POWER = 0.6;
@@ -623,33 +474,22 @@ function app() {
     return {
         tauPhi: 0.47,
         tauJ: 0.35,
-        tauJ2: 0.35,
-        tauJ3: 0.35,
         removal: 'kaiser',
 
         tToX,
 
-        netScale() {
+        // Unified scale: max of both premium and price curves
+        uniScale() {
             let maxAbs = 0;
             for (let i = 0; i <= 50; i++) {
                 let t = T_MIN + (i / 50) * (T_MAX - T_MIN);
-                maxAbs = Math.max(maxAbs, Math.abs(this.premiumVal(t)));
+                maxAbs = Math.max(maxAbs, Math.abs(this.premiumVal(t, this.tauJ)));
+                maxAbs = Math.max(maxAbs, Math.abs(this.priceChangeVal(t, this.tauJ)));
             }
             return maxAbs * 1.15;
         },
-        netToY(v) { return valToY(v, this.netScale()); },
-        niceNetInt() { return niceInterval(this.netScale()); },
-
-        priceScale() {
-            let maxAbs = 0;
-            for (let i = 0; i <= 50; i++) {
-                let t = T_MIN + (i / 50) * (T_MAX - T_MIN);
-                maxAbs = Math.max(maxAbs, Math.abs(this.priceChangeVal(t, this.tauJ2)));
-            }
-            return maxAbs * 1.15;
-        },
-        priceToY(v) { return valToY(v, this.priceScale()); },
-        nicePriceInt() { return niceInterval(this.priceScale()); },
+        uniToY(v) { return valToY(v, this.uniScale()); },
+        niceInt() { return niceInterval(this.uniScale()); },
 
         compMag(t, tj, rem) {
             tj = (tj !== undefined) ? tj : this.tauJ;
@@ -675,25 +515,25 @@ function app() {
             return (1 - tj) * PRICE_PREM_COEFF * dPrem - tj * levShift;
         },
 
-        buildNetCurvePath(/* tauJ, removal */) {
+        buildNetCurvePath() {
             let pts = [];
             for (let i = 0; i <= 200; i++) {
                 let t = T_MIN + (i / 200) * (T_MAX - T_MIN);
-                pts.push(`${tToX(t).toFixed(1)},${this.netToY(this.premiumVal(t)).toFixed(1)}`);
+                pts.push(`${tToX(t).toFixed(1)},${this.uniToY(this.premiumVal(t, this.tauJ)).toFixed(1)}`);
             }
             return 'M ' + pts.join(' L ');
         },
 
-        buildPriceCurvePath(/* tauJ2, removal */) {
+        buildPriceCurvePath() {
             let pts = [];
             for (let i = 0; i <= 200; i++) {
                 let t = T_MIN + (i / 200) * (T_MAX - T_MIN);
-                pts.push(`${tToX(t).toFixed(1)},${this.priceToY(this.priceChangeVal(t, this.tauJ2)).toFixed(1)}`);
+                pts.push(`${tToX(t).toFixed(1)},${this.uniToY(this.priceChangeVal(t, this.tauJ)).toFixed(1)}`);
             }
             return 'M ' + pts.join(' L ');
         },
 
-        forceBarH(which /*, tauPhi, tauJ */) {
+        forceBarH(which) {
             const mag = which === 'comp' ? this.compMag(this.tauPhi) : this.leverageMag(this.tauPhi);
             return Math.min(65, Math.max(2, mag * 65 / FORCE_MAX));
         },
@@ -720,21 +560,21 @@ function app() {
         },
 
         get priceLogicText() {
-            const dp = this.priceChangeVal(this.tauPhi, this.tauJ2);
-            const dPrem = this.premiumVal(this.tauPhi, this.tauJ2);
+            const dp = this.priceChangeVal(this.tauPhi, this.tauJ);
+            const dPrem = this.premiumVal(this.tauPhi, this.tauJ);
             const who = this.removal === 'kaiser' ? 'Kaiser' : 'Blue Cross';
             const premDir = dPrem > 1 ? 'rise' : (dPrem < -1 ? 'fall' : 'barely change');
             if (dp > 0.5) {
-                return `Premiums ${premDir}, and the premium pass-through (weighted by 1\u2212\u03C4_j = ${(1-this.tauJ2).toFixed(2)}) dominates the leverage shift. Hospital prices rise by ~${dp.toFixed(1)}%.`;
+                return `Premiums ${premDir}, and the premium pass-through (weighted by 1\u2212\u03C4_j = ${(1-this.tauJ).toFixed(2)}) dominates the leverage shift. Hospital prices rise by ~${dp.toFixed(1)}%.`;
             } else if (dp > -0.5) {
                 return `The premium pass-through and leverage shift roughly offset. Hospital prices are approximately unchanged (${dp > 0 ? '+' : ''}${dp.toFixed(1)}%).`;
             } else {
-                return `The leverage shift (remaining insurers gain bargaining power) dominates, weighted by \u03C4_j = ${this.tauJ2.toFixed(2)}. Hospital prices fall by ~${Math.abs(dp).toFixed(1)}%.`;
+                return `The leverage shift (remaining insurers gain bargaining power) dominates, weighted by \u03C4_j = ${this.tauJ.toFixed(2)}. Hospital prices fall by ~${Math.abs(dp).toFixed(1)}%.`;
             }
         },
 
         get barWidths() {
-            const tj = this.tauJ3;
+            const tj = this.tauJ;
             return {
                 premEnroll:    0.7 * (1 - tj) * 400,
                 reinforcement: 0.3 * (1 - tj) * 400,
