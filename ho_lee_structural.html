@@ -374,9 +374,9 @@
                             class="control-slider"
                         >
                         <div style="display:flex;justify-content:space-between;margin-top:0.25rem;">
-                            <span style="font-size:0.75rem;color:#78716b;">Weak hospitals</span>
-                            <span class="control-value" x-text="tauBS.toFixed(2)"></span>
                             <span style="font-size:0.75rem;color:#78716b;">Strong hospitals</span>
+                            <span class="control-value" x-text="tauBS.toFixed(2)"></span>
+                            <span style="font-size:0.75rem;color:#78716b;">Weak hospitals</span>
                         </div>
                     </div>
 
@@ -393,9 +393,9 @@
                             class="control-slider"
                         >
                         <div style="display:flex;justify-content:space-between;margin-top:0.25rem;">
-                            <span style="font-size:0.75rem;color:#78716b;">Weak hospitals</span>
-                            <span class="control-value" x-text="tauBC.toFixed(2)"></span>
                             <span style="font-size:0.75rem;color:#78716b;">Strong hospitals</span>
+                            <span class="control-value" x-text="tauBC.toFixed(2)"></span>
+                            <span style="font-size:0.75rem;color:#78716b;">Weak hospitals</span>
                         </div>
                     </div>
 
@@ -515,629 +515,170 @@
 <script>
 
 // =============================================================
-// HO & LEE (2017) STRUCTURAL MODEL
-// Econometrica, Vol. 85, No. 2, pp. 379–417
+// HO & LEE (2017) — SOLVER ENGINE
+// Nested Logit Demand + Nash-in-Nash Bargaining with Recapture
+// Based on Econometrica, Vol. 85, No. 2, pp. 379–417
 // =============================================================
-// This implementation follows the paper's two-level demand system:
-//   Level 1: Individual hospital demand (Eq 8, Table A.III params)
-//   Level 2: Household insurer demand (Eq 9-10, Table A.IV params)
-// Bargaining:
-//   Premiums: CalPERS-insurer Nash bargaining (Eq 3→5, implemented as Eq 12)
-//   Hosp prices: Hospital system-insurer Nash bargaining (Eq 4→6, A.2, 16)
+// This solver implements the paper's core equilibrium model:
+//   - Nested logit demand (PPO nest = {BS, BC}, HMO nest = {Kaiser})
+//   - Nash bargaining over premiums (Eq 5 / Eq 12)
+//   - Nash bargaining over hospital prices with recapture (Eq 6)
+//   - Population: N representative enrollees
+//   - Hospital A (community) serves BS and BC networks
+//   - Hospital B (integrated Kaiser facility) serves Kaiser only
+// τ parameters use the paper's convention: τ = insurer's weight
+//   → low τ = strong hospitals, high τ = weak hospitals
 // =============================================================
 
-// -------------------------------------------------------
-// PART 1: PARAMETER DATA FROM THE PAPER
-// -------------------------------------------------------
+const N = 1000000;
+const BETA = 0.0003;
+const AR = 0.08;
+const SIGMA = 0.85;
 
-// --- Table V, specification (ii): Bargaining params & marginal costs ---
-const ETA = { bs: 1691.50, bc: 1948.61, kaiser: 2535.14 }; // non-inpatient marginal cost per individual ($/yr)
-const TAU_J_DEFAULT = { bs: 0.31, bc: 0.38 }; // hospital bargaining params
-const TAU_PHI_DEFAULT = 0.47;
-const EMPLOYER_CONTRIB = 0.80; // CalPERS pays 80% of premiums
+const DELTA = { bs: 1.0, kaiser: 1.8, bc: 1.3 };
+const ETA   = { bs: 3200, kaiser: 3000, bc: 3100 };
+const NEST  = { bs: 'ppo', kaiser: 'hmo', bc: 'ppo' };
+const HOSP  = { bs: 'A', kaiser: 'B', bc: 'A' };
+const HC    = { A: 8000, B: 7500 };
+const TAU_KAISER_HOSP = 0.35;
 
-// --- Table I: Summary statistics ---
-const OBS_PREM_SINGLE = { bs: 3782.64, bc: 4192.92, kaiser: 3665.04 }; // observed single premiums
-const OBS_HOSP_PRICE = { bs: 7191.11, bc: 6023.86 }; // avg hospital price per admission
-const OBS_HOSP_COST = 1709.56; // avg hospital cost per admission (BS)
-const OBS_HOSP_PAY_IND = { bs: 623.20, bc: 554.00 }; // avg hospital payment per individual
-const PREM_MULT = { single: 1.0, twoparty: 2.0, family: 2.6 }; // premium multipliers by household type
+// --- NESTED LOGIT DEMAND ---
+function calcDemand(prems, active, sigma) {
+    const nests = {};
+    for (const m of active) { const n = NEST[m]; if (!nests[n]) nests[n] = []; nests[n].push(m); }
 
-// --- Table A.IV: Insurer demand parameters ---
-const ALPHA_PHI_0 = -0.0648;  // base premium coefficient
-const ALPHA_PHI_1 = 0.00563;  // premium × log(income) interaction
-const MEDIAN_INCOME = 55;     // median income $55K (for representative household)
-const ALPHA_PHI_REP = ALPHA_PHI_0 + ALPHA_PHI_1 * Math.log(MEDIAN_INCOME); // representative household
+    const nd = {};
+    let sumExpV = 1.0;
+    for (const [n, ms] of Object.entries(nests)) {
+        let D = 0;
+        const eu = {};
+        for (const m of ms) { eu[m] = Math.exp((DELTA[m] - BETA * prems[m]) / sigma); D += eu[m]; }
+        const cs = {};
+        for (const m of ms) cs[m] = eu[m] / D;
+        const expV = Math.exp(sigma * Math.log(D));
+        sumExpV += expV;
+        nd[n] = { ms, cs, expV };
+    }
 
-// WTP coefficients by age-sex category (Table A.IV)
-const ALPHA_WTP = {
-    m0:  -0.0281, m20: 8.909, m35: 4.388, m45: 1.643, m55: 0.917,
-    f0:  -0.0281, f20: 0.936, f35: 1.885, f45: 2.314, f55: 1.838
-};
-
-// Kaiser distance coefficients by HSA (Table A.IV)
-const KAISER_DIST_COEFF = {
-    1:0, 2:-0.0420, 3:-0.0351, 4:-0.0175, 5:-0.0226, 6:-0.0182,
-    7:-0.0286, 8:0, 9:0, 10:-0.0548, 11:-0.0218, 12:-0.0253, 13:-0.0190, 14:-0.0366
-};
-
-// --- Table III: Admission probabilities and DRG weights (CalPERS) ---
-const ADMIT_PROB = {
-    m0:[0.0178,1.49], m20:[0.0207,1.77], m35:[0.0279,1.89], m45:[0.0529,2.05], m55:[0.0970,2.25],
-    f0:[0.0195,1.39], f20:[0.1175,0.87], f35:[0.0731,1.33], f45:[0.0616,1.83], f55:[0.0901,2.02]
-};
-
-// Population mix weights (representative CalPERS enrollment distribution)
-const POP_WEIGHTS = {
-    m0:0.08, m20:0.06, m35:0.10, m45:0.12, m55:0.10,
-    f0:0.08, f20:0.08, f35:0.10, f45:0.10, f55:0.08
-};
-
-// --- Table A.III: Hospital demand interaction parameters ---
-const HOSP_PARAMS = {
-    teaching: { income:0.008, ppo:0.123, cancer:0.098, cardiac:-0.521, digestive:-0.237, labor:-0.069, neuro:1.281 },
-    nurses:   { income:0.000, ppo:0.054, cancer:0.121, cardiac:0.073, digestive:-0.087, labor:-0.179, neuro:-1.009 },
-    forprofit:{ income:0.000, ppo:0.033, cancer:0.012, cardiac:0.107, digestive:-0.122, labor:0.324, neuro:0.609 },
-    cardiac_svc: { income:0.008, ppo:0.254, cardiac:0.251, cancer:0.050 },
-    imaging_svc: { income:-0.003, ppo:0.142, cancer:0.139, cardiac:0.083 },
-    cancer_svc:  { income:-0.013, ppo:-0.133, cancer:0.444 },
-    labor_svc:   { income:0.006, ppo:-0.168, labor:1.164 }
-};
-
-// Distance coefficients by HSA (Table A.III)
-const DIST_COEFF = {
-    1:-0.107, 2:-0.155, 3:-0.235, 4:-0.274, 5:-0.240,
-    6:-0.186, 7:-0.246, 8:-0.149, 9:-0.106, 10:-0.165,
-    11:-0.132, 12:-0.312, 13:-0.190, 14:-0.114
-};
-
-// Diagnosis category weights for each age-sex group
-const DIAG_WEIGHTS = {
-    m0: [0.10,0.05,0.10,0.00,0.10,0.65], m20:[0.08,0.04,0.12,0.00,0.08,0.68],
-    m35:[0.12,0.06,0.15,0.00,0.10,0.57], m45:[0.18,0.10,0.15,0.00,0.12,0.45],
-    m55:[0.25,0.12,0.15,0.00,0.15,0.33],
-    f0: [0.05,0.04,0.08,0.00,0.08,0.75], f20:[0.03,0.03,0.05,0.55,0.03,0.31],
-    f35:[0.06,0.06,0.10,0.35,0.06,0.37], f45:[0.10,0.12,0.12,0.05,0.10,0.51],
-    f55:[0.15,0.14,0.13,0.02,0.12,0.44]
-};
-const DIAG_NAMES = ['cardiac','cancer','digestive','labor','neuro','other'];
-
-// --- Table II: Market data (14 HSAs) ---
-const MARKETS = {
-    1:  {name:'North',          enroll:{bs:5366,bc:15143,kaiser:0},      nSys:{bs:5,bc:17},  kaiserAvail:false},
-    2:  {name:'Sacramento',     enroll:{bs:55732,bc:6212,kaiser:59772},  nSys:{bs:6,bc:8},   kaiserAvail:true},
-    3:  {name:'Sonoma/Napa',    enroll:{bs:6826,bc:955,kaiser:13762},    nSys:{bs:5,bc:5},   kaiserAvail:true},
-    4:  {name:'SF Bay West',    enroll:{bs:6021,bc:926,kaiser:4839},     nSys:{bs:4,bc:4},   kaiserAvail:true},
-    5:  {name:'East Bay',       enroll:{bs:7856,bc:1200,kaiser:10763},   nSys:{bs:9,bc:10},  kaiserAvail:true},
-    6:  {name:'North San Joaquin',enroll:{bs:9663,bc:3979,kaiser:4210}, nSys:{bs:7,bc:8},   kaiserAvail:true},
-    7:  {name:'San Jose/South Bay',enroll:{bs:2515,bc:762,kaiser:4725}, nSys:{bs:5,bc:6},   kaiserAvail:true},
-    8:  {name:'Central Coast',  enroll:{bs:8028,bc:13365,kaiser:0},      nSys:{bs:4,bc:9},   kaiserAvail:false},
-    9:  {name:'Central Valley', enroll:{bs:27663,bc:7613,kaiser:10211},  nSys:{bs:12,bc:13}, kaiserAvail:true},
-    10: {name:'Santa Barbara',  enroll:{bs:3973,bc:1416,kaiser:658},     nSys:{bs:7,bc:7},   kaiserAvail:true},
-    11: {name:'Los Angeles',    enroll:{bs:18205,bc:6731,kaiser:23919},  nSys:{bs:22,bc:28}, kaiserAvail:true},
-    12: {name:'Inland Empire',  enroll:{bs:17499,bc:2801,kaiser:20690},  nSys:{bs:15,bc:15}, kaiserAvail:true},
-    13: {name:'Orange',         enroll:{bs:7836,bc:2906,kaiser:5430},    nSys:{bs:8,bc:9},   kaiserAvail:true},
-    14: {name:'San Diego',      enroll:{bs:14585,bc:2298,kaiser:8593},   nSys:{bs:10,bc:8},  kaiserAvail:true}
-};
-
-// -------------------------------------------------------
-// PART 2: SEEDED PRNG & SYNTHETIC DATA GENERATOR
-// -------------------------------------------------------
-
-function mulberry32(a) {
-    return function() {
-        a |= 0; a = a + 0x6D2B79F5 | 0;
-        var t = Math.imul(a ^ a >>> 15, 1 | a);
-        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    };
-}
-const RNG = mulberry32(2017);
-
-function randBetween(a, b) { return a + RNG() * (b - a); }
-function randNormal(mu, sd) {
-    const u1 = RNG(), u2 = RNG();
-    return mu + sd * Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+    const sh = {}, csh = {}, nsh = {};
+    for (const [n, d] of Object.entries(nd)) {
+        const ns = d.expV / sumExpV;
+        for (const m of d.ms) { sh[m] = d.cs[m] * ns; csh[m] = d.cs[m]; nsh[m] = ns; }
+    }
+    return { sh, csh, nsh };
 }
 
-function generateHospitalSystems(hsaId) {
-    const mkt = MARKETS[hsaId];
-    const nBS = mkt.nSys.bs, nBC = mkt.nSys.bc;
-    const nTotal = Math.max(nBS, nBC) + Math.floor(Math.min(nBS, nBC) * 0.3);
-    const systems = [];
-
-    for (let s = 0; s < nTotal; s++) {
-        const sys = {
-            id: `h${hsaId}_s${s}`,
-            hsa: hsaId,
-            teaching: RNG() < 0.20 ? 1 : 0,
-            nurses_per_bed: randNormal(1.5, 0.4),
-            forprofit: RNG() < 0.25 ? 1 : 0,
-            cardiac_svc: RNG() < 0.70 ? 1 : 0,
-            imaging_svc: RNG() < 0.80 ? 1 : 0,
-            cancer_svc: RNG() < 0.50 ? 1 : 0,
-            labor_svc: RNG() < 0.60 ? 1 : 0,
-            cost: randNormal(OBS_HOSP_COST, 400),
-            fe: randNormal(0, 0.5),
-            dist: {},
-            inNetwork: { bs: false, bc: false, kaiser: false }
-        };
-        sys.nurses_per_bed = Math.max(0.5, sys.nurses_per_bed);
-        sys.cost = Math.max(500, sys.cost);
-
-        sys.dist.bs = randBetween(0.5, 4.0);
-        sys.dist.bc = randBetween(0.5, 4.5);
-        sys.dist.kaiser = randBetween(1.0, 5.0);
-
-        if (s < nBS || (s >= nBS && RNG() < 0.15)) sys.inNetwork.bs = true;
-        if (s < nBC || (s >= nBC && RNG() < 0.15)) sys.inNetwork.bc = true;
-        sys.inNetwork.kaiser = false;
-
-        systems.push(sys);
+// --- EMPLOYER WELFARE (nested logit inclusive value) ---
+function empWelfare(prems, active, sigma) {
+    const nests = {};
+    for (const m of active) { const n = NEST[m]; if (!nests[n]) nests[n] = []; nests[n].push(m); }
+    let sumExpV = 1.0;
+    for (const [n, ms] of Object.entries(nests)) {
+        let D = 0;
+        for (const m of ms) D += Math.exp((DELTA[m] - BETA * prems[m]) / sigma);
+        sumExpV += Math.exp(sigma * Math.log(D));
     }
-
-    if (mkt.kaiserAvail) {
-        const nKaiser = hsaId === 11 ? 3 : (hsaId === 2 || hsaId === 12 ? 2 : 1);
-        for (let k = 0; k < nKaiser; k++) {
-            systems.push({
-                id: `h${hsaId}_k${k}`,
-                hsa: hsaId,
-                teaching: RNG() < 0.30 ? 1 : 0,
-                nurses_per_bed: randNormal(1.8, 0.3),
-                forprofit: 0,
-                cardiac_svc: 1, imaging_svc: 1, cancer_svc: RNG()<0.6?1:0, labor_svc: 1,
-                cost: randNormal(OBS_HOSP_COST * 0.95, 300),
-                fe: randNormal(0.3, 0.3),
-                dist: { bs: 99, bc: 99, kaiser: randBetween(0.5, 3.0) },
-                inNetwork: { bs: false, bc: false, kaiser: true }
-            });
-        }
-    }
-
-    return systems;
+    return N * Math.log(sumExpV) / BETA;
 }
 
-let ALL_SYSTEMS = {};
-let ALL_SYSTEMS_FLAT = [];
-for (const hsaId of Object.keys(MARKETS)) {
-    const systems = generateHospitalSystems(parseInt(hsaId));
-    ALL_SYSTEMS[hsaId] = systems;
-    ALL_SYSTEMS_FLAT.push(...systems);
-}
-
-// -------------------------------------------------------
-// PART 3: HOSPITAL DEMAND MODEL (Eq 8)
-// -------------------------------------------------------
-
-function computeHospitalUtility(sys, hsaId, ageKey, diagIdx, isPPO) {
-    let u = sys.fe;
-    const diag = DIAG_NAMES[diagIdx];
-    const income = MEDIAN_INCOME;
-
-    if (sys.teaching) {
-        u += (HOSP_PARAMS.teaching.income || 0) * income;
-        if (isPPO) u += HOSP_PARAMS.teaching.ppo || 0;
-        u += HOSP_PARAMS.teaching[diag] || 0;
-    }
-    const npb = sys.nurses_per_bed;
-    u += (HOSP_PARAMS.nurses.income || 0) * income * npb;
-    if (isPPO) u += (HOSP_PARAMS.nurses.ppo || 0) * npb;
-    u += (HOSP_PARAMS.nurses[diag] || 0) * npb;
-
-    if (sys.forprofit) {
-        u += (HOSP_PARAMS.forprofit.income || 0) * income;
-        if (isPPO) u += HOSP_PARAMS.forprofit.ppo || 0;
-        u += HOSP_PARAMS.forprofit[diag] || 0;
-    }
-    for (const svc of ['cardiac_svc','imaging_svc','cancer_svc','labor_svc']) {
-        if (sys[svc]) {
-            const params = HOSP_PARAMS[svc];
-            if (params) {
-                u += (params.income || 0) * income;
-                if (isPPO) u += params.ppo || 0;
-                u += params[diag] || 0;
-            }
-        }
-    }
-    return u;
-}
-
-function computeWTP(hsaId, insurer, ageKey) {
-    const systems = ALL_SYSTEMS[hsaId];
-    const network = systems.filter(s => s.inNetwork[insurer]);
-    if (network.length === 0) return -10;
-
-    const isPPO = (insurer === 'bs' || insurer === 'bc');
-    const diagWeights = DIAG_WEIGHTS[ageKey];
-    const distCoeff = DIST_COEFF[hsaId] || -0.15;
-
-    let wtp = 0;
-    for (let d = 0; d < DIAG_NAMES.length; d++) {
-        if (diagWeights[d] < 0.001) continue;
-
-        let maxU = -Infinity;
-        const utils = [];
-        for (const sys of network) {
-            let u = computeHospitalUtility(sys, hsaId, ageKey, d, isPPO);
-            u += distCoeff * sys.dist[insurer];
-            utils.push(u);
-            if (u > maxU) maxU = u;
-        }
-
-        let sumExp = 0;
-        for (const u of utils) sumExp += Math.exp(u - maxU);
-        const logsum = maxU + Math.log(sumExp);
-
-        wtp += diagWeights[d] * logsum;
-    }
-
-    return wtp;
-}
-
-let WTP_CACHE = {};
-
-function precomputeWTP(activeInsurers) {
-    WTP_CACHE = {};
-    for (const hsaId of Object.keys(MARKETS)) {
-        WTP_CACHE[hsaId] = {};
-        const mkt = MARKETS[hsaId];
-        for (const ins of activeInsurers) {
-            if (ins === 'kaiser' && !mkt.kaiserAvail) continue;
-            WTP_CACHE[hsaId][ins] = {};
-            for (const ageKey of Object.keys(POP_WEIGHTS)) {
-                WTP_CACHE[hsaId][ins][ageKey] = computeWTP(parseInt(hsaId), ins, ageKey);
-            }
-        }
-    }
-}
-
-// -------------------------------------------------------
-// PART 4: INSURER DEMAND (Eq 9-10) + BERRY INVERSION
-// -------------------------------------------------------
-
-let INSURER_FE = {};
-
-function insurerMeanUtility(hsaId, insurer, premium, fe) {
-    const premDisutil = ALPHA_PHI_REP * (premium / 60);
-
-    let wtpUtil = 0;
-    if (WTP_CACHE[hsaId] && WTP_CACHE[hsaId][insurer]) {
-        for (const ageKey of Object.keys(POP_WEIGHTS)) {
-            const wtp = WTP_CACHE[hsaId][insurer][ageKey] || 0;
-            const alphaW = ALPHA_WTP[ageKey] || 0;
-            wtpUtil += alphaW * wtp * POP_WEIGHTS[ageKey];
-        }
-    }
-
-    let kaiserDist = 0;
-    if (insurer === 'kaiser') {
-        kaiserDist = (KAISER_DIST_COEFF[hsaId] || 0) * 15;
-    }
-
-    return fe + premDisutil + wtpUtil + kaiserDist;
-}
-
-function computeShares(hsaId, premiums, activeInsurers, fes) {
-    const mkt = MARKETS[hsaId];
-    const available = activeInsurers.filter(ins =>
-        ins !== 'kaiser' || mkt.kaiserAvail
-    );
-
-    const utils = {};
-    for (const ins of available) {
-        utils[ins] = insurerMeanUtility(hsaId, ins, premiums[ins], fes[ins] || 0);
-    }
-
-    let maxU = 0;
-    for (const ins of available) maxU = Math.max(maxU, utils[ins]);
-
-    let denom = Math.exp(0 - maxU);
-    for (const ins of available) denom += Math.exp(utils[ins] - maxU);
-
-    const shares = {};
-    for (const ins of available) {
-        shares[ins] = Math.exp(utils[ins] - maxU) / denom;
-    }
-    shares._outside = Math.exp(0 - maxU) / denom;
-
-    return shares;
-}
-
-function berryInversion(activeInsurers) {
-    INSURER_FE = {};
-    for (const hsaId of Object.keys(MARKETS)) {
-        const mkt = MARKETS[hsaId];
-        const totalEnroll = (mkt.enroll.bs || 0) + (mkt.enroll.bc || 0) + (mkt.enroll.kaiser || 0);
-        const totalPop = totalEnroll / 0.85;
-        const s0 = 1 - totalEnroll / totalPop;
-
-        for (const ins of activeInsurers) {
-            if (ins === 'kaiser' && !mkt.kaiserAvail) continue;
-            const sj = (mkt.enroll[ins] || 0) / totalPop;
-            if (sj < 1e-6) continue;
-
-            const premDisutil = ALPHA_PHI_REP * (OBS_PREM_SINGLE[ins] / 60);
-            let wtpUtil = 0;
-            if (WTP_CACHE[hsaId] && WTP_CACHE[hsaId][ins]) {
-                for (const ageKey of Object.keys(POP_WEIGHTS)) {
-                    const wtp = WTP_CACHE[hsaId][ins][ageKey] || 0;
-                    wtpUtil += (ALPHA_WTP[ageKey] || 0) * wtp * POP_WEIGHTS[ageKey];
-                }
-            }
-            let kaiserDist = 0;
-            if (ins === 'kaiser') kaiserDist = (KAISER_DIST_COEFF[hsaId] || 0) * 15;
-
-            if (!INSURER_FE[hsaId]) INSURER_FE[hsaId] = {};
-            INSURER_FE[hsaId][ins] = Math.log(sj / s0) - premDisutil - wtpUtil - kaiserDist;
-        }
-    }
-}
-
-// -------------------------------------------------------
-// PART 5: HOSPITAL DEMAND PER ENROLLEE
-// -------------------------------------------------------
-
-let HOSP_DEMAND_PER_ENROLLEE = {};
-
-function precomputeHospDemandPerEnrollee(activeInsurers) {
-    HOSP_DEMAND_PER_ENROLLEE = {};
-    for (const hsaId of Object.keys(MARKETS)) {
-        HOSP_DEMAND_PER_ENROLLEE[hsaId] = {};
-        const mkt = MARKETS[hsaId];
-        const systems = ALL_SYSTEMS[hsaId];
-
-        for (const ins of activeInsurers) {
-            if (ins === 'kaiser' && !mkt.kaiserAvail) continue;
-            HOSP_DEMAND_PER_ENROLLEE[hsaId][ins] = {};
-
-            const network = systems.filter(s => s.inNetwork[ins]);
-            if (network.length === 0) continue;
-            const isPPO = (ins === 'bs' || ins === 'bc');
-            const distCoeff = DIST_COEFF[hsaId] || -0.15;
-
-            for (const ageKey of Object.keys(POP_WEIGHTS)) {
-                const [admitProb, drgWeight] = ADMIT_PROB[ageKey];
-                const diagWeights = DIAG_WEIGHTS[ageKey];
-
-                for (let d = 0; d < DIAG_NAMES.length; d++) {
-                    if (diagWeights[d] < 0.001) continue;
-
-                    const utils = [];
-                    for (const sys of network) {
-                        let u = computeHospitalUtility(sys, parseInt(hsaId), ageKey, d, isPPO);
-                        u += distCoeff * sys.dist[ins];
-                        utils.push({ sys, u });
-                    }
-
-                    const maxU = Math.max(...utils.map(x => x.u));
-                    let sumExp = 0;
-                    for (const x of utils) sumExp += Math.exp(x.u - maxU);
-
-                    for (const x of utils) {
-                        const prob = Math.exp(x.u - maxU) / sumExp;
-                        const demand = POP_WEIGHTS[ageKey] * admitProb * drgWeight * diagWeights[d] * prob;
-                        if (!HOSP_DEMAND_PER_ENROLLEE[hsaId][ins][x.sys.id]) {
-                            HOSP_DEMAND_PER_ENROLLEE[hsaId][ins][x.sys.id] = 0;
-                        }
-                        HOSP_DEMAND_PER_ENROLLEE[hsaId][ins][x.sys.id] += demand;
-                    }
-                }
-            }
-        }
-    }
-}
-
-// -------------------------------------------------------
-// PART 6: PREMIUM FOC & HOSPITAL PRICE MODEL
-// -------------------------------------------------------
-
-const REV_PER_IND = { bs: 2860.34, bc: 3179.39, kaiser: 2788.05 };
-const HOSP_PAY_PER_IND = { bs: 623.20, bc: 554.00, kaiser: 452.00 };
-
-const KAPPA = 3.0;
-function bargainAdjust(tauPhi) { return tauPhi / (tauPhi + KAPPA * (1 - tauPhi)); }
-
-function computeGFTAdjustment(insurer, activeInsurers) {
-    if (activeInsurers.length >= 3) return 1.0;
-
-    const allThree = ['bs', 'bc', 'kaiser'];
-    let totalPop = 0, enrollBase = 0, enrollCF = 0;
-
-    for (const hsaId of Object.keys(MARKETS)) {
-        const mkt = MARKETS[hsaId];
-        const fes = INSURER_FE[hsaId] || {};
-        const pop = Object.values(mkt.enroll).reduce((s, v) => s + v, 0) / 0.85;
-        totalPop += pop;
-
-        const sharesBase = computeShares(hsaId, OBS_PREM_SINGLE, allThree, fes);
-        enrollBase += (sharesBase[insurer] || 0) * pop;
-
-        const sharesCF = computeShares(hsaId, OBS_PREM_SINGLE, activeInsurers, fes);
-        enrollCF += (sharesCF[insurer] || 0) * pop;
-    }
-
-    const s_base = enrollBase / totalPop;
-    const s_cf = enrollCF / totalPop;
-
-    const csRatio = Math.log(1 / (1 - Math.min(s_cf, 0.95))) /
-                    Math.max(Math.log(1 / (1 - Math.min(s_base, 0.95))), 0.01);
-    const gft_cs = Math.pow(Math.max(csRatio, 0.1), 0.60);
-
-    const removedInsurers = allThree.filter(x => !activeInsurers.includes(x));
-    let empAdj = 1.0;
-    for (const removed of removedInsurers) {
-        const premDiff = (OBS_PREM_SINGLE[removed] - OBS_PREM_SINGLE[insurer]) / OBS_PREM_SINGLE[insurer];
-        empAdj *= Math.exp(-premDiff * 3.6);
-    }
-
-    return Math.max(0.3, Math.min(3.0, gft_cs * empAdj));
-}
-
-const PREM_PASSTHROUGH = 0.015;
-
-function computeHospitalPrices(premiums, activeInsurers, tauBS, tauBC) {
+// --- HOSPITAL PRICES (Nash Bargaining FOC with Recapture) ---
+function solvePricesGivenPremiums(prems, tauBS, tauBC, sigma, activeMCOs) {
     const prices = {};
-    const tauJ = { bs: tauBS, bc: tauBC };
-    const removedInsurers = ['bs','bc','kaiser'].filter(x => !activeInsurers.includes(x));
+    const tauMap = { bs: tauBS, bc: tauBC, kaiser: TAU_KAISER_HOSP };
 
-    for (const hsaId of Object.keys(ALL_SYSTEMS)) {
-        const mkt = MARKETS[hsaId];
-        const systems = ALL_SYSTEMS[hsaId];
+    const hospGroups = {};
+    for (const m of activeMCOs) {
+        const h = HOSP[m];
+        if (!hospGroups[h]) hospGroups[h] = [];
+        hospGroups[h].push(m);
+    }
 
-        for (const sys of systems) {
-            if (sys.inNetwork.kaiser) {
-                prices[sys.id + '_kaiser'] = sys.cost * 1.4;
-            }
+    for (const [h, mcos] of Object.entries(hospGroups)) {
+        const ci = HC[h];
+        if (mcos.length === 1) {
+            const m = mcos[0];
+            const tau = tauMap[m];
+            let p = (1 - tau) * (prems[m] - ETA[m]) / AR + tau * ci;
+            prices[m] = Math.max(p, ci);
+        } else if (mcos.length === 2) {
+            const [j, k] = mcos;
+            const tJ = tauMap[j], tK = tauMap[k];
+            const { sh: shBase } = calcDemand(prems, activeMCOs, sigma);
 
-            for (const ins of ['bs', 'bc']) {
-                if (!sys.inNetwork[ins] || !activeInsurers.includes(ins)) continue;
+            const withoutJ = activeMCOs.filter(x => x !== j);
+            const { sh: shNoJ } = calcDemand(prems, withoutJ, sigma);
+            const alphaJ = shBase[j] > 1e-15 ? tJ * (shNoJ[k] - shBase[k]) / shBase[j] : 0;
 
-                const obsPrice = ins === 'bs' ? OBS_HOSP_PRICE.bs : OBS_HOSP_PRICE.bc;
-                const costFactor = sys.cost / OBS_HOSP_COST;
-                let price = obsPrice * costFactor;
+            const withoutK = activeMCOs.filter(x => x !== k);
+            const { sh: shNoK } = calcDemand(prems, withoutK, sigma);
+            const alphaK = shBase[k] > 1e-15 ? tK * (shNoK[j] - shBase[j]) / shBase[k] : 0;
 
-                const revFactor = REV_PER_IND[ins] / OBS_PREM_SINGLE[ins];
-                const premMarginBase = OBS_PREM_SINGLE[ins] * revFactor - ETA[ins];
-                const premMarginNew = premiums[ins] * revFactor - ETA[ins];
-                const premEffect = PREM_PASSTHROUGH * (premMarginNew / premMarginBase - 1);
+            const Aj = (1 - tJ) * (prems[j] - ETA[j]) / AR + tJ * ci;
+            const Ak = (1 - tK) * (prems[k] - ETA[k]) / AR + tK * ci;
 
-                let networkEffect = 0;
-                for (const removed of removedInsurers) {
-                    if (removed === 'kaiser') continue;
-                    if (sys.inNetwork[removed]) {
-                        const removedEnroll = mkt.enroll[removed] || 0;
-                        const myEnroll = mkt.enroll[ins] || 0;
-                        const totalEnroll = removedEnroll + myEnroll;
-                        const removedVolShare = removedEnroll / Math.max(totalEnroll, 1);
-                        networkEffect -= removedVolShare * 0.40;
-                    }
-                }
-
-                const tau = tauJ[ins] || 0.35;
-                const tauBase = ins === 'bs' ? 0.31 : 0.38;
-                const tauEffect = -(tau - tauBase) * (obsPrice - sys.cost) / obsPrice;
-
-                price *= (1 + premEffect + networkEffect + tauEffect);
-                price = Math.max(sys.cost, Math.min(25000, price));
-                prices[sys.id + '_' + ins] = price;
+            const denom = 1 - alphaJ * alphaK;
+            if (Math.abs(denom) > 1e-10) {
+                let pj = (Aj + alphaJ * (Ak - ci + alphaK * ci)) / denom;
+                let pk = (Ak + alphaK * (Aj - ci + alphaJ * ci)) / denom;
+                prices[j] = Math.max(pj, ci);
+                prices[k] = Math.max(pk, ci);
+            } else {
+                prices[j] = Math.max(Aj, ci);
+                prices[k] = Math.max(Ak, ci);
             }
         }
     }
     return prices;
 }
 
-// -------------------------------------------------------
-// PART 7: EQUILIBRIUM SOLVER
-// -------------------------------------------------------
+// --- EQUILIBRIUM SOLVER ---
+function solveEquilibrium(tauPhi, tauBS, tauBC, activeMCOs) {
+    const sigma = SIGMA;
+    let prems = {};
+    for (const m of activeMCOs) {
+        prems[m] = ETA[m] + AR * (HC[HOSP[m]] + 1000) + 800;
+    }
 
-function solveEquilibrium(tauPhi, tauBS, tauBC, activeInsurers) {
-    const ALL_THREE = ['bs', 'bc', 'kaiser'];
-    precomputeWTP(ALL_THREE);
-    berryInversion(ALL_THREE);
-    precomputeHospDemandPerEnrollee(activeInsurers);
-
-    let premiums = { bs: OBS_PREM_SINGLE.bs, bc: OBS_PREM_SINGLE.bc, kaiser: OBS_PREM_SINGLE.kaiser };
-    let prices = computeHospitalPrices(premiums, activeInsurers, tauBS, tauBC);
-
-    const MAX_ITER = 400, TOL = 0.3, P_DAMP = 0.08;
-    let enrollment = {};
-    let totalPopAll = 0;
+    const MAX_ITER = 3000, TOL = 0.05;
+    const P_DAMP = 0.10;
 
     for (let iter = 0; iter < MAX_ITER; iter++) {
+        const prices = solvePricesGivenPremiums(prems, tauBS, tauBC, sigma, activeMCOs);
+
         let maxChange = 0;
+        const { sh, csh, nsh } = calcDemand(prems, activeMCOs, sigma);
 
-        totalPopAll = 0;
-        enrollment = {};
-        for (const hsaId of Object.keys(MARKETS)) {
-            const mkt = MARKETS[hsaId];
-            const fes = INSURER_FE[hsaId] || {};
-            const shares = computeShares(hsaId, premiums, activeInsurers, fes);
-            const totalPop = Object.values(mkt.enroll).reduce((s, v) => s + v, 0) / 0.85;
-            totalPopAll += totalPop;
-            enrollment[hsaId] = {};
-            for (const ins of activeInsurers) {
-                if (ins === 'kaiser' && !mkt.kaiserAvail) continue;
-                enrollment[hsaId][ins] = (shares[ins] || 0) * totalPop;
+        const Wf = empWelfare(prems, activeMCOs, sigma);
+        for (const m of activeMCOs) {
+            const sj = sh[m], sjg = csh[m], sg = nsh[m];
+            if (sj < 1e-12) continue;
+
+            const others = activeMCOs.filter(k => k !== m);
+            const GFT = Wf - empWelfare(prems, others, sigma);
+            if (GFT <= 0) continue;
+
+            const Q = (1 - sjg) / sigma + sjg * (1 - sg);
+            const rhs = ((1 - tauPhi) * N * sj) / (tauPhi * GFT) + BETA * Q;
+            if (rhs <= 0) continue;
+
+            const targetMargin = 1.0 / rhs;
+            const np = targetMargin + ETA[m] + AR * prices[m];
+            const floor = ETA[m] + AR * HC[HOSP[m]] + 10;
+            if (np >= floor && np < 50000) {
+                maxChange = Math.max(maxChange, Math.abs(np - prems[m]));
+                prems[m] += P_DAMP * (np - prems[m]);
             }
         }
 
-        for (const ins of activeInsurers) {
-            let totalEnroll = 0, totalHospPay = 0;
-            for (const hsaId of Object.keys(MARKETS)) {
-                const mkt = MARKETS[hsaId];
-                if (ins === 'kaiser' && !mkt.kaiserAvail) continue;
-                const D_j = enrollment[hsaId]?.[ins] || 0;
-                totalEnroll += D_j;
-                const hospDem = HOSP_DEMAND_PER_ENROLLEE[hsaId]?.[ins] || {};
-                for (const [sysId, dem] of Object.entries(hospDem)) {
-                    totalHospPay += D_j * dem * (prices[sysId + '_' + ins] || 6000);
-                }
-            }
-            if (totalEnroll < 100) continue;
-
-            const avgHospPay = totalHospPay / totalEnroll;
-            const avgShare = totalEnroll / totalPopAll;
-
-            const alpha_eff_dollar = Math.abs(ALPHA_PHI_REP) / 60;
-            const margin_NB = 1 / (alpha_eff_dollar * Math.max(1 - avgShare, 0.15));
-
-            const g = bargainAdjust(tauPhi);
-            const gftAdj = computeGFTAdjustment(ins, activeInsurers);
-            const margin = margin_NB * g * gftAdj;
-
-            const revFactor = REV_PER_IND[ins] / OBS_PREM_SINGLE[ins];
-            const targetPrem = (ETA[ins] + avgHospPay + margin) / revFactor;
-            const clamped = Math.max(2500, Math.min(8000, targetPrem));
-
-            maxChange = Math.max(maxChange, Math.abs(clamped - premiums[ins]));
-            premiums[ins] += P_DAMP * (clamped - premiums[ins]);
-        }
-
-        if (iter % 20 === 0) {
-            prices = computeHospitalPrices(premiums, activeInsurers, tauBS, tauBC);
-        }
-
-        if (maxChange < TOL && iter > 30) {
-            prices = computeHospitalPrices(premiums, activeInsurers, tauBS, tauBC);
-            return { premiums, prices, enrollment, converged: true, iters: iter + 1 };
+        if (maxChange < TOL) {
+            const finalPrices = solvePricesGivenPremiums(prems, tauBS, tauBC, sigma, activeMCOs);
+            const finalD = calcDemand(prems, activeMCOs, sigma);
+            return { prems, prices: finalPrices, shares: finalD.sh, iters: iter + 1, converged: true };
         }
     }
-
-    prices = computeHospitalPrices(premiums, activeInsurers, tauBS, tauBC);
-    return { premiums, prices, enrollment, converged: false, iters: MAX_ITER };
-}
-
-// -------------------------------------------------------
-// PART 8: AGGREGATE RESULTS
-// -------------------------------------------------------
-
-function aggregateResults(result, activeInsurers) {
-    const out = {};
-    for (const ins of activeInsurers) {
-        let totalEnroll = 0, weightedPrice = 0, totalHospPay = 0, totalAdmissions = 0;
-        for (const hsaId of Object.keys(MARKETS)) {
-            const mkt = MARKETS[hsaId];
-            if (ins === 'kaiser' && !mkt.kaiserAvail) continue;
-            const D_j = result.enrollment[hsaId]?.[ins] || 0;
-            totalEnroll += D_j;
-
-            const hospDem = HOSP_DEMAND_PER_ENROLLEE[hsaId]?.[ins] || {};
-            for (const [sysId, dem] of Object.entries(hospDem)) {
-                const p = result.prices[sysId + '_' + ins] || 6000;
-                weightedPrice += D_j * dem * p;
-                totalHospPay += D_j * dem * p;
-                totalAdmissions += D_j * dem;
-            }
-        }
-
-        out[ins] = {
-            premium: result.premiums[ins],
-            enrollment: totalEnroll,
-            avgHospPrice: totalAdmissions > 0 ? weightedPrice / totalAdmissions : 0,
-            hospPayPerInd: totalEnroll > 0 ? totalHospPay / totalEnroll : 0
-        };
-    }
-    return out;
+    const finalPrices = solvePricesGivenPremiums(prems, tauBS, tauBC, sigma, activeMCOs);
+    const finalD = calcDemand(prems, activeMCOs, sigma);
+    return { prems, prices: finalPrices, shares: finalD.sh, iters: MAX_ITER, converged: false };
 }
 
 // -------------------------------------------------------
@@ -1215,23 +756,21 @@ function hoLeeModel() {
 
             const base = solveEquilibrium(this.tauPhi, this.tauBS, this.tauBC, ALL);
             const cf = solveEquilibrium(this.tauPhi, this.tauBS, this.tauBC, CF);
-            const baseAgg = aggregateResults(base, ALL);
-            const cfAgg = aggregateResults(cf, CF);
 
-            this.currentPremDelta = ((cfAgg.bs.premium - baseAgg.bs.premium) / baseAgg.bs.premium) * 100;
-            this.currentPriceDelta = ((cfAgg.bs.avgHospPrice - baseAgg.bs.avgHospPrice) / baseAgg.bs.avgHospPrice) * 100;
+            this.currentPremDelta = ((cf.prems.bs - base.prems.bs) / base.prems.bs) * 100;
+            this.currentPriceDelta = ((cf.prices.bs - base.prices.bs) / base.prices.bs) * 100;
             this.lastIters = base.iters + cf.iters;
 
-            const totalBaseEnroll = Object.values(baseAgg).reduce((s,v) => s + v.enrollment, 0);
-            const totalCfEnroll = Object.values(cfAgg).reduce((s,v) => s + v.enrollment, 0);
+            const insuredBase = ALL.reduce((s, m) => s + (base.shares[m] || 0), 0);
+            const insuredCf = CF.reduce((s, m) => s + (cf.shares[m] || 0), 0);
 
             this.eqDetails = {
-                basePrem: Math.round(baseAgg.bs.premium).toLocaleString(),
-                cfPrem: Math.round(cfAgg.bs.premium).toLocaleString(),
-                basePrice: Math.round(baseAgg.bs.avgHospPrice).toLocaleString(),
-                cfPrice: Math.round(cfAgg.bs.avgHospPrice).toLocaleString(),
-                baseShare: parseFloat((baseAgg.bs.enrollment / totalBaseEnroll * 100).toFixed(1)),
-                cfShare: parseFloat((cfAgg.bs.enrollment / totalCfEnroll * 100).toFixed(1)),
+                basePrem: Math.round(base.prems.bs).toLocaleString(),
+                cfPrem: Math.round(cf.prems.bs).toLocaleString(),
+                basePrice: Math.round(base.prices.bs).toLocaleString(),
+                cfPrice: Math.round(cf.prices.bs).toLocaleString(),
+                baseShare: parseFloat((base.shares.bs / insuredBase * 100).toFixed(1)),
+                cfShare: parseFloat((cf.shares.bs / insuredCf * 100).toFixed(1)),
             };
 
             this.generateCurve();
@@ -1253,11 +792,9 @@ function hoLeeModel() {
                 const tp = T_MIN + (i / STEPS) * (T_MAX - T_MIN);
                 const base = solveEquilibrium(tp, this.tauBS, this.tauBC, ALL);
                 const cf = solveEquilibrium(tp, this.tauBS, this.tauBC, CF);
-                const baseAgg = aggregateResults(base, ALL);
-                const cfAgg = aggregateResults(cf, CF);
 
-                const premDelta = ((cfAgg.bs.premium - baseAgg.bs.premium) / baseAgg.bs.premium) * 100;
-                const priceDelta = ((cfAgg.bs.avgHospPrice - baseAgg.bs.avgHospPrice) / baseAgg.bs.avgHospPrice) * 100;
+                const premDelta = ((cf.prems.bs - base.prems.bs) / base.prems.bs) * 100;
+                const priceDelta = ((cf.prices.bs - base.prices.bs) / base.prices.bs) * 100;
                 data.push({ tp, premDelta, priceDelta });
                 maxAbs = Math.max(maxAbs, Math.abs(premDelta), Math.abs(priceDelta));
 

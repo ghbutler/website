@@ -219,8 +219,8 @@
     </div>
     <div class="cg">
         <label>σ (nesting param.)</label>
-        <input type="range" id="sigma" min="0.15" max="0.99" step="0.01" value="0.50">
-        <span class="val" id="sigmaVal">0.50</span>
+        <input type="range" id="sigma" min="0.15" max="0.99" step="0.01" value="0.85">
+        <span class="val" id="sigmaVal">0.85</span>
     </div>
     <div class="cg">
         <label>Counterfactual</label>
@@ -631,8 +631,10 @@ async function runStress() {
     else log('⚠ Expected removing Kaiser to have larger premium impact', 'warn');
     if (bH < kH) log('✓ Removing BC has more negative price impact (recapture effect)', 'ok');
     else log('⚠ Expected removing BC to show recapture-driven price decrease', 'warn');
-    if (bP > 0 && bH < 0) log('✓ Remove BC: premium UP but price DOWN — curves cross!', 'ok');
-    else log('⚠ Remove BC: signs not opposite', 'warn');
+    if (bP < 0) log('✓ Remove BC: premium falls (employer leverage dominates, consistent with paper\'s −3.4%)', 'ok');
+    else log('⚠ Remove BC: premium rose — paper\'s constrained result predicts a decrease', 'warn');
+    if (bH < 0) log('✓ Remove BC: hospital prices fall (recapture effect, consistent with paper\'s −8.9%)', 'ok');
+    else log('⚠ Remove BC: hospital prices rose — paper predicts a decrease via lost recapture', 'warn');
     lockButtons(false);
 }
 
