@@ -1,1 +1,153 @@
 /* css styles */
+
+/* ===================================================================
+   Project page styles (prefix: tp-). Scoped so they touch nothing else.
+   Colors come from the active Bootstrap theme, so if the Quarto theme
+   in _quarto.yml changes, this page follows it.
+   =================================================================== */
+
+.tp-hero {
+  text-align: center;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--bs-border-color);
+}
+
+.tp-venue {
+  font-size: .8rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  margin-bottom: 1.25rem;
+}
+
+.tp-authors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem 1.75rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+.tp-authors li { text-align: center; }
+.tp-authors .n { display: block; font-weight: 600; font-size: .95rem; line-height: 1.3; }
+.tp-authors .n.me { color: var(--bs-primary); }
+.tp-authors .a {
+  display: block;
+  font-size: .75rem;
+  line-height: 1.35;
+  color: var(--bs-secondary-color);
+}
+
+.tp-takeaway {
+  max-width: 34em;
+  margin: 0 auto 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--bs-secondary-color);
+}
+
+.tp-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
+
+/* Key findings ---------------------------------------------------- */
+
+.tp-findings { list-style: none; margin: 0; padding: 0; }
+.tp-findings > li {
+  display: grid;
+  grid-template-columns: 1.75rem 1fr;
+  gap: 0 .85rem;
+  margin-bottom: 1.4rem;
+}
+.tp-findings .k {
+  font-size: .8rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--bs-primary);
+  border-radius: 4px;
+  height: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tp-findings .c { font-weight: 600; color: var(--bs-primary); }
+
+/* Flow diagram ---------------------------------------------------- */
+
+.tp-flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: .5rem; }
+.tp-flow .step {
+  flex: 1 1 150px;
+  min-width: 0;
+  border: 1px solid var(--bs-border-color);
+  border-radius: .375rem;
+  background: var(--bs-tertiary-bg);
+  padding: .7rem .8rem;
+}
+.tp-flow .branch { display: flex; flex-direction: column; gap: .5rem; flex: 1.15 1 160px; min-width: 0; }
+.tp-flow .branch .step { flex: 1 1 auto; }
+.tp-flow .yes { border-left: 3px solid var(--bs-primary); }
+.tp-flow .no  { border-left: 3px solid var(--bs-secondary); }
+.tp-flow .k {
+  display: block;
+  font-size: .68rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  margin-bottom: .15rem;
+}
+.tp-flow .t { display: block; font-weight: 600; font-size: .9rem; line-height: 1.3; }
+.tp-flow .d { display: block; font-size: .8rem; line-height: 1.4; color: var(--bs-secondary-color); }
+.tp-flow .arrow { align-self: center; flex: none; color: var(--bs-secondary-color); }
+
+@media (max-width: 700px) {
+  .tp-flow { flex-direction: column; }
+  .tp-flow .step, .tp-flow .branch { flex: 0 0 auto; }
+  .tp-flow .arrow { transform: rotate(90deg); align-self: flex-start; margin-left: 1.2rem; }
+}
+
+/* Charts ---------------------------------------------------------- */
+
+.tp-chart { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tp-chart > svg { display: block; min-width: 520px; width: 100%; height: auto; }
+
+.tp-chart .ax   { stroke: var(--bs-border-color); stroke-width: 1; }
+.tp-chart .ref  { stroke: var(--bs-secondary-color); stroke-width: 1; stroke-dasharray: 3 3; }
+.tp-chart .tick { fill: var(--bs-secondary-color); font-size: 12px; }
+.tp-chart .lbl  { fill: var(--bs-body-color); font-size: 13px; }
+.tp-chart .lbl.sub { fill: var(--bs-secondary-color); font-size: 11.5px; }
+.tp-chart .val  { fill: var(--bs-secondary-color); font-size: 11.5px; }
+.tp-chart .axttl{ fill: var(--bs-secondary-color); font-size: 12px; }
+.tp-chart .ci   { stroke: var(--bs-primary); stroke-width: 1.5; }
+.tp-chart .pt   { fill: var(--bs-primary); }
+.tp-chart .bar  { fill: var(--bs-primary); }
+.tp-chart .ci.alt { stroke: #343a40; }
+.tp-chart .pt.alt { fill: #343a40; }
+.tp-chart .bar.alt{ fill: #343a40; }
+.tp-chart .ci.nil { stroke: #9aa0a6; }
+.tp-chart .pt.nil { fill: #9aa0a6; }
+
+.tp-cap {
+  font-size: .82rem;
+  line-height: 1.5;
+  color: var(--bs-secondary-color);
+  margin-top: .6rem;
+  max-width: 42em;
+}
+.tp-cap b { color: var(--bs-body-color); }
+
+.tp-fig { margin: 1.75rem 0; }
+
+/* Citation -------------------------------------------------------- */
+
+.tp-cite { position: relative; }
+.tp-cite pre {
+  background: var(--bs-tertiary-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: .375rem;
+  padding: .9rem 1rem;
+  font-size: .8rem;
+  line-height: 1.55;
+  overflow-x: auto;
+  margin: 0;
+}
+.tp-copy { position: absolute; top: .5rem; right: .5rem; }
