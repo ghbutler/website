@@ -1,0 +1,2126 @@
+{
+  "FA25": [
+    {
+      "code": "5009",
+      "title": "Career Management for Public Affairs",
+      "url": "https://classes.cornell.edu/browse/roster/FA25/class/PUBPOL/5009",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 6101,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5111",
+      "title": "Public Administration",
+      "url": "https://classes.cornell.edu/browse/roster/FA25/class/PUBPOL/5111",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5319,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 6111,
+              "component": "SEM",
+              "section": "102",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5120",
+      "title": "Global Citizenship",
+      "url": "https://classes.cornell.edu/browse/roster/FA25/class/PUBPOL/5120",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 19842,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "M",
+                  "start": 540,
+                  "end": 690,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 20783,
+              "component": "SEM",
+              "section": "102",
+              "meetings": [
+                {
+                  "days": "M",
+                  "start": 720,
+                  "end": 870,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5210",
+      "title": "Intermediate Microeconomics for Public Affairs",
+      "url": "https://classes.cornell.edu/browse/roster/FA25/class/PUBPOL/5210",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5329,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 520,
+                  "end": 595,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 18925,
+              "component": "LEC",
+              "section": "002",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 520,
+                  "end": 595,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5310",
+      "title": "Applied Econometrics for Public Policy",
+      "url": "https://classes.cornell.edu/browse/roster/FA25/class/PUBPOL/5310",
+      "groups": [
+        {
+          "required": [
+            "LEC",
+            "DIS"
+          ],
+          "credits": 4.0,
+          "sections": [
+            {
+              "id": 6153,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            },
+            {
+              "id": 6154,
+              "component": "DIS",
+              "section": "201",
+              "meetings": [
+                {
+                  "days": "R",
+                  "start": 870,
+                  "end": 920,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            },
+            {
+              "id": 6155,
+              "component": "DIS",
+              "section": "202",
+              "meetings": [
+                {
+                  "days": "R",
+                  "start": 935,
+                  "end": 985,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            },
+            {
+              "id": 6156,
+              "component": "DIS",
+              "section": "203",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 675,
+                  "end": 725,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            },
+            {
+              "id": 6157,
+              "component": "DIS",
+              "section": "204",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 740,
+                  "end": 790,
+                  "fromDate": "2025-08-25",
+                  "toDate": "2025-12-08"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "SP26": [
+    {
+      "code": "5012",
+      "title": "Professional Development for Public Affairs",
+      "url": "https://classes.cornell.edu/browse/roster/SP26/class/PUBPOL/5012",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 0.5,
+          "sections": [
+            {
+              "id": 5280,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "R",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2026-02-05",
+                  "toDate": "2026-02-05"
+                },
+                {
+                  "days": "R",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2026-02-26",
+                  "toDate": "2026-02-26"
+                },
+                {
+                  "days": "R",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2026-03-05",
+                  "toDate": "2026-03-05"
+                },
+                {
+                  "days": "R",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2026-03-26",
+                  "toDate": "2026-03-26"
+                },
+                {
+                  "days": "R",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2026-04-23",
+                  "toDate": "2026-04-23"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5072",
+      "title": "Using Big Data to Solve Economic and Social Problems",
+      "url": "https://classes.cornell.edu/browse/roster/SP26/class/PUBPOL/5072",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5376,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 805,
+                  "end": 880,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5220",
+      "title": "Public Finance: Economics of the Public Sector",
+      "url": "https://classes.cornell.edu/browse/roster/SP26/class/PUBPOL/5220",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5277,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5230",
+      "title": "Comparative Education Policy",
+      "url": "https://classes.cornell.edu/browse/roster/SP26/class/PUBPOL/5230",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5345,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 805,
+                  "end": 880,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5410",
+      "title": "Nonprofit Management and Finance",
+      "url": "https://classes.cornell.edu/browse/roster/SP26/class/PUBPOL/5410",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5266,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "M",
+                  "start": 1020,
+                  "end": 1170,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5414",
+      "title": "Project Management",
+      "url": "https://classes.cornell.edu/browse/roster/SP26/class/PUBPOL/5414",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5283,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 610,
+                  "end": 685,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5284,
+              "component": "LEC",
+              "section": "002",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 805,
+                  "end": 880,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5441",
+      "title": "Effective Writing for Public Policy",
+      "url": "https://classes.cornell.edu/browse/roster/SP26/class/PUBPOL/5441",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 5291,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-03-10"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 5292,
+              "component": "LEC",
+              "section": "003",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-03-10"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 5293,
+              "component": "LEC",
+              "section": "002",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2026-03-11",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 5294,
+              "component": "LEC",
+              "section": "004",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2026-03-11",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5451",
+      "title": "International Public and NGO Management",
+      "url": "https://classes.cornell.edu/browse/roster/SP26/class/PUBPOL/5451",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5257,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5730",
+      "title": "Comparative Environmental Policy",
+      "url": "https://classes.cornell.edu/browse/roster/SP26/class/PUBPOL/5730",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5276,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 610,
+                  "end": 685,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5750",
+      "title": "Causal Analysis and Impact Evaluation in Public Policy",
+      "url": "https://classes.cornell.edu/browse/roster/SP26/class/PUBPOL/5750",
+      "groups": [
+        {
+          "required": [
+            "LEC",
+            "DIS"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5360,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 520,
+                  "end": 595,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-04-08"
+                },
+                {
+                  "days": "MW",
+                  "start": 520,
+                  "end": 595,
+                  "fromDate": "2026-04-13",
+                  "toDate": "2026-04-15"
+                }
+              ]
+            },
+            {
+              "id": 5361,
+              "component": "DIS",
+              "section": "201",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 545,
+                  "end": 595,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            },
+            {
+              "id": 5362,
+              "component": "DIS",
+              "section": "202",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 610,
+                  "end": 660,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            },
+            {
+              "id": 5363,
+              "component": "DIS",
+              "section": "203",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 740,
+                  "end": 790,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            },
+            {
+              "id": 5364,
+              "component": "DIS",
+              "section": "204",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 805,
+                  "end": 855,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC",
+            "DIS"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 18453,
+              "component": "LEC",
+              "section": "002",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 520,
+                  "end": 595,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-04-15"
+                }
+              ]
+            },
+            {
+              "id": 18454,
+              "component": "DIS",
+              "section": "205",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 545,
+                  "end": 595,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5780",
+      "title": "Artificial Intelligence and Public Sector Decision Making",
+      "url": "https://classes.cornell.edu/browse/roster/SP26/class/PUBPOL/5780",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 5347,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 675,
+                  "end": 825,
+                  "fromDate": "2026-01-20",
+                  "toDate": "2026-05-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "FA26": [
+    {
+      "code": "5009",
+      "title": "Career Management for Public Affairs",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5009",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 13719,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "R",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5080",
+      "title": "Economics of the U.S. Social Safety Net",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5080",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13698,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5111",
+      "title": "Public Administration",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5111",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13658,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13659,
+              "component": "SEM",
+              "section": "102",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5120",
+      "title": "Global Citizenship",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5120",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13760,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "M",
+                  "start": 540,
+                  "end": 690,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13761,
+              "component": "SEM",
+              "section": "102",
+              "meetings": [
+                {
+                  "days": "M",
+                  "start": 720,
+                  "end": 870,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5160",
+      "title": "Diversity, Dialogue and Ethical Leadership",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5160",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13767,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 610,
+                  "end": 685,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5200",
+      "title": "International Human Rights Policy",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5200",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13758,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 805,
+                  "end": 880,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5210",
+      "title": "Intermediate Microeconomics for Public Affairs",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5210",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13716,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 520,
+                  "end": 595,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13717,
+              "component": "LEC",
+              "section": "002",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 520,
+                  "end": 595,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5310",
+      "title": "Applied Econometrics for Public Policy",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5310",
+      "groups": [
+        {
+          "required": [
+            "LEC",
+            "DIS"
+          ],
+          "credits": 4.0,
+          "sections": [
+            {
+              "id": 13692,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            },
+            {
+              "id": 13693,
+              "component": "DIS",
+              "section": "201",
+              "meetings": [
+                {
+                  "days": "R",
+                  "start": 870,
+                  "end": 920,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            },
+            {
+              "id": 13694,
+              "component": "DIS",
+              "section": "202",
+              "meetings": [
+                {
+                  "days": "R",
+                  "start": 935,
+                  "end": 985,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            },
+            {
+              "id": 13695,
+              "component": "DIS",
+              "section": "203",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 675,
+                  "end": 725,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            },
+            {
+              "id": 13696,
+              "component": "DIS",
+              "section": "204",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 740,
+                  "end": 790,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5340",
+      "title": "Regulation and Infrastructure Policy",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5340",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13683,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 805,
+                  "end": 880,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5360",
+      "title": "Program Evaluation for Community Organizations",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5360",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 4.0,
+          "sections": [
+            {
+              "id": 13680,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 785,
+                  "end": 885,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5370",
+      "title": "Economics of Health Care Markets",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5370",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13759,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 610,
+                  "end": 685,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5425",
+      "title": "Fundamentals of Accounting and Financial Management for Public and Nonprofit Organizations",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5425",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13705,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 805,
+                  "end": 880,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5560",
+      "title": "Market Design for Public Policy",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5560",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13769,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5619",
+      "title": "Politics, Policy, and Political Management",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5619",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13686,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5679",
+      "title": "Desktop and Modeling Solutions",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5679",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13681,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 520,
+                  "end": 595,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5717",
+      "title": "Energy Transition: Policy, Financial, and Business Interactions",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5717",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13736,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5734",
+      "title": "Disasters, Vulnerability, and Resilience",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5734",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13701,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 610,
+                  "end": 685,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5840",
+      "title": "Data Visualization for Public Policy",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5840",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13776,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MWF",
+                  "start": 545,
+                  "end": 595,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5910",
+      "title": "Master of Public Administration Capstone I",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5910",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 13676,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2026-10-14",
+                  "toDate": "2026-12-04"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 13677,
+              "component": "SEM",
+              "section": "102",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2026-10-14",
+                  "toDate": "2026-12-04"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5940",
+      "title": "Consulting for Nonprofit and Government Organizations",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5940",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13666,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 610,
+                  "end": 685,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5970",
+      "title": "Economics and Environmental Policy",
+      "url": "https://classes.cornell.edu/browse/roster/FA26/class/PUBPOL/5970",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13699,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2026-08-24",
+                  "toDate": "2026-12-07"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "SP27": [
+    {
+      "code": "5012",
+      "title": "Professional Development for Public Affairs",
+      "url": "https://classes.cornell.edu/browse/roster/SP27/class/PUBPOL/5012",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 0.5,
+          "sections": [
+            {
+              "id": 13034,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "R",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2027-02-04",
+                  "toDate": "2027-02-04"
+                },
+                {
+                  "days": "R",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2027-03-04",
+                  "toDate": "2027-03-04"
+                },
+                {
+                  "days": "R",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2027-03-25",
+                  "toDate": "2027-03-25"
+                },
+                {
+                  "days": "R",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2027-04-22",
+                  "toDate": "2027-04-22"
+                },
+                {
+                  "days": "R",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2027-04-29",
+                  "toDate": "2027-04-29"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5130",
+      "title": "Behavioral Economics and Public Policy",
+      "url": "https://classes.cornell.edu/browse/roster/SP27/class/PUBPOL/5130",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13022,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 610,
+                  "end": 685,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5155",
+      "title": "Data Management and Programming for Policy and Society",
+      "url": "https://classes.cornell.edu/browse/roster/SP27/class/PUBPOL/5155",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13130,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 520,
+                  "end": 595,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5160",
+      "title": "Diversity, Dialogue and Ethical Leadership",
+      "url": "https://classes.cornell.edu/browse/roster/SP27/class/PUBPOL/5160",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13105,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 610,
+                  "end": 685,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5180",
+      "title": "Strategic Planning for Nonprofit & Government Organizations",
+      "url": "https://classes.cornell.edu/browse/roster/SP27/class/PUBPOL/5180",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 13106,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "W",
+                  "start": 780,
+                  "end": 930,
+                  "fromDate": "2027-03-17",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5414",
+      "title": "Project Management",
+      "url": "https://classes.cornell.edu/browse/roster/SP27/class/PUBPOL/5414",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13035,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13036,
+              "component": "LEC",
+              "section": "002",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 805,
+                  "end": 880,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5432",
+      "title": "Public and Nonprofit Marketing",
+      "url": "https://classes.cornell.edu/browse/roster/SP27/class/PUBPOL/5432",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13058,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5441",
+      "title": "Effective Writing for Public Policy",
+      "url": "https://classes.cornell.edu/browse/roster/SP27/class/PUBPOL/5441",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 13046,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 610,
+                  "end": 685,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-03-16"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 13047,
+              "component": "LEC",
+              "section": "002",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-03-16"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 13048,
+              "component": "LEC",
+              "section": "003",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 610,
+                  "end": 685,
+                  "fromDate": "2027-03-17",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 13049,
+              "component": "LEC",
+              "section": "004",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2027-03-17",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5607",
+      "title": "Global Policy Challenges",
+      "url": "https://classes.cornell.edu/browse/roster/SP27/class/PUBPOL/5607",
+      "groups": [
+        {
+          "required": [
+            "LEC"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13088,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 1020,
+                  "end": 1095,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5750",
+      "title": "Causal Analysis and Impact Evaluation in Public Policy",
+      "url": "https://classes.cornell.edu/browse/roster/SP27/class/PUBPOL/5750",
+      "groups": [
+        {
+          "required": [
+            "LEC",
+            "DIS"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13122,
+              "component": "LEC",
+              "section": "001",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-04-04"
+                },
+                {
+                  "days": "TR",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2027-04-05",
+                  "toDate": "2027-04-09"
+                }
+              ]
+            },
+            {
+              "id": 13124,
+              "component": "DIS",
+              "section": "201",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 545,
+                  "end": 595,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            },
+            {
+              "id": 13125,
+              "component": "DIS",
+              "section": "202",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 610,
+                  "end": 660,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            },
+            {
+              "id": 13126,
+              "component": "DIS",
+              "section": "203",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 740,
+                  "end": 790,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            },
+            {
+              "id": 13127,
+              "component": "DIS",
+              "section": "204",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 870,
+                  "end": 920,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "LEC",
+            "DIS"
+          ],
+          "credits": 3.0,
+          "sections": [
+            {
+              "id": 13123,
+              "component": "LEC",
+              "section": "002",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-04-09"
+                }
+              ]
+            },
+            {
+              "id": 13128,
+              "component": "DIS",
+              "section": "205",
+              "meetings": [
+                {
+                  "days": "F",
+                  "start": 610,
+                  "end": 660,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-05-11"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5912",
+      "title": "Master of Public Administration Capstone III",
+      "url": "https://classes.cornell.edu/browse/roster/SP27/class/PUBPOL/5912",
+      "groups": [
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 13142,
+              "component": "SEM",
+              "section": "101",
+              "meetings": [
+                {
+                  "days": "MW",
+                  "start": 700,
+                  "end": 775,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-03-16"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "required": [
+            "SEM"
+          ],
+          "credits": 1.5,
+          "sections": [
+            {
+              "id": 13143,
+              "component": "SEM",
+              "section": "102",
+              "meetings": [
+                {
+                  "days": "TR",
+                  "start": 895,
+                  "end": 970,
+                  "fromDate": "2027-01-25",
+                  "toDate": "2027-03-16"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
